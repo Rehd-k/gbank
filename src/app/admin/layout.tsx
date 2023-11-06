@@ -15,11 +15,6 @@ export default async function AdminNav({
 
     await dbConnect()
 
-    if (!session) {
-        () => toast("Please Login to Continue");
-        redirect('/login')
-    }
-
     return (
         <AdminNavHeader>
             {children}
