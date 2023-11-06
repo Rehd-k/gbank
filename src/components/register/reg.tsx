@@ -18,7 +18,7 @@ export default function RegisterCom() {
     const checkIfUserIsConfirmed = async (user_email: string) => {
         try {
             const user = await axios.get(`/register/api?email=${user_email}`)
-            
+
             if (user.data.user.status === "processing") {
                 setProccessing(true)
             }
@@ -27,12 +27,12 @@ export default function RegisterCom() {
 
     useEffect(() => {
         const user_email = localStorage.getItem("user_email");
-      
+
         if (user_email) {
             checkIfUserIsConfirmed(user_email)
         }
 
-    },[]) 
+    }, [])
 
 
     const doToast = (e: string) => toast(e)
@@ -48,6 +48,12 @@ export default function RegisterCom() {
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
 
+    const checkServer = async () => {
+        const newUser = await axios.get('/register/api')
+
+        console.log(newUser)
+    }
+
     async function doSubmit() {
         const stepone = JSON.parse(localStorage.getItem("stepOne")!)
         const steptwo = JSON.parse(localStorage.getItem("stepTwo")!)
@@ -60,7 +66,6 @@ export default function RegisterCom() {
             ...stepthree,
             ...stepfour
         }
-
 
         try {
             doToast("Submitting Your Application...")
@@ -102,6 +107,10 @@ export default function RegisterCom() {
 
     return (
         <>
+
+            <div className="h-10 w-full bg-green-900" onClick={checkServer}>
+                do the kin check
+            </div>
             <div className="h-screen md:grid md:grid-cols-2">
                 <div
                     className="relative overflow-hidden md:flex w-full bg-gradient-to-tr from-[#4f0d56] to-purple-800 i justify-around items-center">

@@ -11,23 +11,25 @@ export async function GET(request: NextRequest) {
 
     const usernameParam = request.nextUrl.searchParams.get("username")!;
 
+    console.log(emailParam, usernameParam)
 
-    if (emailParam) {
-        const savedUser = await User.findOne({
-            email: emailParam,
 
-        })
-        user = savedUser
-    } else if (usernameParam) {
-        const savedUser = await User.findOne({
-            where: {
-                username: usernameParam,
-            }
-        })
-        user = savedUser
-    }
+    // if (emailParam) {
+    //     const savedUser = await User.findOne({
+    //         email: emailParam,
 
-    return NextResponse.json({ user });
+    //     })
+    //     user = savedUser
+    // } else if (usernameParam) {
+    //     const savedUser = await User.findOne({
+    //         where: {
+    //             username: usernameParam,
+    //         }
+    //     })
+    //     user = savedUser
+    // }
+
+    return NextResponse.json({ user : 'this text' });
 }
 
 export async function POST(request: NextRequest) {
