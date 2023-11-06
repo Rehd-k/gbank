@@ -2,16 +2,22 @@
 import { NextResponse, NextRequest } from "next/server";
 import { customAlphabet } from 'nanoid';
 import User from "../../../../model/user";
+import dbConnect from "@/libs/dbconnect";
 
 const nanoid = customAlphabet('1234567890', 10)
 
 export async function GET(request: NextRequest) {
     let user;
-    const emailParam = request.nextUrl.searchParams.get("email")!;
 
-    const usernameParam = request.nextUrl.searchParams.get("username")!;
 
-    console.log(emailParam, usernameParam)
+    await dbConnect()
+    // const emailParam = request.nextUrl.searchParams.get("email")!;
+
+    // const usernameParam = request.nextUrl.searchParams.get("username")!;
+
+    // console.log(emailParam, usernameParam)
+
+    const users = await User.find()
 
 
     // if (emailParam) {
@@ -29,7 +35,7 @@ export async function GET(request: NextRequest) {
     //     user = savedUser
     // }
 
-    return NextResponse.json({ user : 'this text' });
+    return NextResponse.json({ user: 'this text' });
 }
 
 export async function POST(request: NextRequest) {
