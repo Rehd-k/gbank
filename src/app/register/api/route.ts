@@ -35,7 +35,7 @@ export async function GET(request: NextRequest) {
     //     user = savedUser
     // }
 
-    return NextResponse.json({ user: 'this text' });
+    return NextResponse.json({ user: users });
 }
 
 export async function POST(request: NextRequest) {
