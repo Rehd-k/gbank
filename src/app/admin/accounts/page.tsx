@@ -3,6 +3,7 @@ import AddAccountForm from "../components/addAccountForm"
 import User from "../../../../model/user"
 
 export default async function Accounts() {
+    await dbConnect()
     const users = await User.find({
         status: "confirmed"
     })

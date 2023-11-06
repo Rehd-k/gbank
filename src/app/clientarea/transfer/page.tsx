@@ -7,6 +7,7 @@ import User from "../../../../model/user";
 
 
 export default async function Transfers() {
+    await dbConnect()
     const session = await getServerSession(authOptions) as any
   
     const cards = await Card.find({

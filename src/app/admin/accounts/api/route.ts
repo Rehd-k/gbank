@@ -4,6 +4,7 @@ import Card from "../../../../../model/card";
 import User from "../../../../../model/user";
 
 export async function POST(request: NextRequest) {
+    await dbConnect()
     const body = await request.json()
 
     const account = await Card.create(body);

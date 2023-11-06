@@ -4,9 +4,11 @@ import Topcarosel from "@/components/dashboard/topcarosel";
 import { authOptions } from "@/libs/auth";
 import { getServerSession } from "next-auth/next";
 import User from "../../../../model/user";
+import dbConnect from "@/libs/dbconnect";
 
 
 export default async function dahsboard() {
+    await dbConnect()
     const session = await getServerSession(authOptions) as any
     const user = await User
         .findById(session?.user.id)

@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import User from "../../../../../model/user";
+import dbConnect from "@/libs/dbconnect";
 
 export async function PUT(request: NextRequest) {
+    await dbConnect()
     const body = await request.json();
     const userId = request.nextUrl.searchParams.get("id");
 

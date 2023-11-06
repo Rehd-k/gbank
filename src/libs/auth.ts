@@ -26,6 +26,7 @@ export const authOptions: NextAuthOptions = {
                     throw new Error('Please fill provide username and password');
 
                 }
+                await dbConnect();
                 const user = await User.findOne({
                     username: credentials.username
                 });

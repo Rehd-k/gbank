@@ -4,7 +4,7 @@ import UserComponent from "../components/users/users";
 
 
 export default async function Users() {
-
+    await dbConnect()
     const users = await User.find()
         .populate('cards')
     return <>

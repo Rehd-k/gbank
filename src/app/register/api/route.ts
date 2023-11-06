@@ -11,34 +11,30 @@ export async function GET(request: NextRequest) {
 
 
     await dbConnect()
-    // const emailParam = request.nextUrl.searchParams.get("email")!;
+    const emailParam = request.nextUrl.searchParams.get("email")!;
 
-    // const usernameParam = request.nextUrl.searchParams.get("username")!;
+    const usernameParam = request.nextUrl.searchParams.get("username")!;
 
-    // console.log(emailParam, usernameParam)
+    if (emailParam) {
+        const savedUser = await User.findOne({
+            email: emailParam,
 
-    const users = await User.find()
+        })
+        user = savedUser
+    } else if (usernameParam) {
+        const savedUser = await User.findOne({
+            where: {
+                username: usernameParam,
+            }
+        })
+        user = savedUser
+    }
 
-
-    // if (emailParam) {
-    //     const savedUser = await User.findOne({
-    //         email: emailParam,
-
-    //     })
-    //     user = savedUser
-    // } else if (usernameParam) {
-    //     const savedUser = await User.findOne({
-    //         where: {
-    //             username: usernameParam,
-    //         }
-    //     })
-    //     user = savedUser
-    // }
-
-    return NextResponse.json({ user: users });
+    return NextResponse.json({ user });
 }
 
 export async function POST(request: NextRequest) {
+    await dbConnect()
     const body = await request.json()
 
     try {

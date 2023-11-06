@@ -4,6 +4,7 @@ import TransactionsTabs from "../components/transactionTab";
 import Transaction from "../../../../model/transactions";
 
 export default async function Transactions() {
+    await dbConnect()
     const users = await User
         .find()
         .select("username")

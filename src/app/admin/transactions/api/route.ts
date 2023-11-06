@@ -9,6 +9,8 @@ const nanoid = customAlphabet('1234567890', 10)
 export async function POST(request: NextRequest) {
     const body = await request.json()
 
+    await dbConnect()
+
     const transBody = {
         date: body.date,
         title: body.description,
@@ -52,6 +54,8 @@ export async function POST(request: NextRequest) {
 }
 
 export async function GET(request: NextRequest) {
+
+    await dbConnect()
     const allTransactions = await Transaction.find()
 
     return NextResponse.json({
@@ -61,17 +65,17 @@ export async function GET(request: NextRequest) {
 
 
 export async function PUT(request: NextRequest) {
-
+    await dbConnect()
     const user_id = request.nextUrl.searchParams.get("id")!;
     const transactionUpdate = await request.json();
     const allTransactions = await Transaction.findById(user_id)
-        .populate({path : "user", select : "username"});
+        .populate({ path: "user", select: "username" });
 
     allTransactions.approved = transactionUpdate.approved;
 
     await allTransactions.save()
 
-    
+
 
 
     return NextResponse.json({
@@ -80,6 +84,7 @@ export async function PUT(request: NextRequest) {
 }
 
 export async function DELETE(request: NextRequest) {
+    await dbConnect()
     const user_id = request.nextUrl.searchParams.get("id")!;
 
     await Transaction.findByIdAndDelete(user_id)
