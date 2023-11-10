@@ -10,6 +10,7 @@ import ArrowForwardTwoToneIcon from '@mui/icons-material/ArrowForwardTwoTone';
 import Activity from "./activity";
 import { Box, Paper } from "@mui/material";
 import Link from "next/link";
+import { LockClockOutlined } from "@mui/icons-material";
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -94,7 +95,7 @@ export default function Activities({ inArray, out }: any) {
                         <Tab icon={<ListTwoToneIcon />} aria-label="All" />
                         <Tab icon={<FileDownloadTwoToneIcon />} aria-label="Inward" />
                         <Tab icon={<FileUploadTwoToneIcon />} aria-label="OutWars" />
-                        <Tab icon={<ArrowForwardTwoToneIcon />} aria-label="Forward" />
+                        <Tab icon={<LockClockOutlined />} aria-label="Forward" />
                     </Tabs>
 
 

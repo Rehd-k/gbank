@@ -25,6 +25,7 @@ import Image from 'next/image'
 import { signOut } from 'next-auth/react';
 import { useEffect } from 'react';
 import { Paper } from '@mui/material';
+import { DirectionsTwoTone, Outbound, OutboundTwoTone } from '@mui/icons-material';
 
 const drawerWidth = 240;
 
@@ -54,9 +55,14 @@ export default function Header({ props, user, children }: any) {
             link: '/clientarea/transfer',
         },
         {
-            icon: <AccountCircleTwoToneIcon />,
-            title: 'Account',
-            link: '/clientarea/accounts'
+            icon: <DirectionsTwoTone />,
+            title: 'Transactions',
+            link: '/clientarea/transactions'
+        },
+        {
+            icon: <OutboundTwoTone />,
+            title: 'Withdrawal',
+            link: '/clientarea/withdrawals'
         },
         {
             icon: <SettingsSuggestTwoToneIcon />,
