@@ -17,3 +17,15 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ account }, { status: 200 });
 }
+
+export async function DELETE(request: NextRequest) {
+    await dbConnect()
+    const card_id = request.nextUrl.searchParams.get("id")!;
+
+    await Card.findByIdAndDelete(card_id)
+
+    return NextResponse.json({
+        Done: 'Done'
+    })
+
+} 

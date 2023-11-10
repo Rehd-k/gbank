@@ -107,7 +107,7 @@ export default function Activities({ inArray, out }: any) {
                                     py: 10
                                 }}>
                                     <div className="text-center">
-                                        No Transaction, <Link href={'/clientarea/transfer'} className="text-blue-900"> Make a Transaction </Link>  to Start
+                                        No Transaction .
                                     </div>
                                 </Paper>
                                 :
@@ -125,7 +125,7 @@ export default function Activities({ inArray, out }: any) {
                                     py: 10
                                 }}>
                                     <div className="text-center">
-                                        No Transaction, <Link href={'/clientarea/transfer'} className="text-blue-900"> Make a Transaction </Link>  to Start
+                                        No Transaction .
                                     </div>
                                 </Paper>
                                 :
@@ -144,7 +144,7 @@ export default function Activities({ inArray, out }: any) {
                                     py: 10
                                 }}>
                                     <div className="text-center">
-                                        No Transaction, <Link href={'/clientarea/transfer'} className="text-blue-900"> Make a Transaction </Link>  to Start
+                                        No Transaction .
                                     </div>
                                 </Paper>
                                 :
@@ -162,7 +162,7 @@ export default function Activities({ inArray, out }: any) {
                                     py: 10
                                 }}>
                                     <div className="text-center">
-                                        No Transaction, <Link href={'/clientarea/transfer'} className="text-blue-900"> Make a Transaction </Link>  to Start
+                                        No Transaction .
                                     </div>
                                 </Paper>
                                 :

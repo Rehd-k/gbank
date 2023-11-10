@@ -6,15 +6,13 @@ import {
     MenuItem,
     TextField,
     Button,
-    Backdrop,
     Box,
     Fade,
     Modal,
     Typography,
     FormHelperText
 } from "@mui/material";
-import { SetStateAction, useEffect, useState } from "react";
-import RecipietCard from "./recipientCard";
+import { useState } from "react";
 import CheckCircleTwoToneIcon from '@mui/icons-material/CheckCircleTwoTone';
 import { ToastContainer, toast } from "react-toastify";
 import * as yup from "yup";
@@ -51,7 +49,11 @@ const validationSchema = yup.object({
         .string(),
     user_id: yup
         .string(),
-    out: yup.string()
+    out: yup.string(),
+
+    routing_number: yup.string(),
+
+    bank_name: yup.string()
 })
 
 
@@ -61,23 +63,8 @@ export default function TrasferCard({ cards, user_id, user }: any) {
     const [open, setOpen] = useState(false);
     const [openTransfers, setTransferOpen] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
-    const [newRecipient, setNewRecipient] = useState({
-        account_name: ' ',
-        account_number: 0,
-        routing_number: '',
-        bank_name: ''
-    })
+
     const accounts = JSON.parse(cards)
-
-    const doNewRecipient = (e: SetStateAction<{ account_name: string; account_number: number; routing_number: string; bank_name: string; }>) => {
-        setNewRecipient(e)
-        setOpen(false)
-    }
-
-    const openModal = () => setOpen(true);
-    const closeModal = () => {
-        setOpen(false)
-    };
 
 
     const closeTransfers = () => {
@@ -85,22 +72,20 @@ export default function TrasferCard({ cards, user_id, user }: any) {
     }
 
 
-    useEffect(() => {
-        console.log(newRecipient)
-    }, [open])
-
     const formIk = useFormik({
         initialValues: {
             account: '',
             destination: 'Internal',
-            accountNumber: newRecipient.account_number,
-            accountName: newRecipient.account_name,
+            accountNumber: 0,
+            accountName: '',
             frequency: 'one_off',
             recipient: '',
+            routing_number: '',
             amount: 0,
             description: '',
             user_id: user_id,
             out: true,
+            bank_name: '',
         },
         validationSchema: validationSchema,
         onSubmit: async (value) => {
@@ -123,7 +108,7 @@ export default function TrasferCard({ cards, user_id, user }: any) {
         await axios.post("/admin/transactions/api", value)
         setIsOpen(false)
         setTransferOpen(true)
-        
+
         formIk.resetForm()
     }
 
@@ -194,54 +179,49 @@ export default function TrasferCard({ cards, user_id, user }: any) {
                 </div>
 
                 <div className={`transition-all duration-300 ${formIk.values.destination === 'Internal' ? contrast : extend}`}>
-                    <FormControl variant="outlined" fullWidth>
-                        <InputLabel id="">
-                            Select Recipient :
-                        </InputLabel>
-                        <Select
-                            label="Select Recipient"
-                            name="recipient"
-                            value={formIk.values.recipient}
-                            onChange={formIk.handleChange}
-                            onBlur={formIk.handleBlur}
-                        >
-                            {newRecipient.account_number === 0 ?
 
-                                <MenuItem onClick={openModal} value={''}>
-                                    Add Recipient
-                                </MenuItem> :
-                                <MenuItem className="flex justify-between" value={newRecipient.account_name}>
-                                    <span>
-                                        {
-                                            newRecipient.account_name
-                                        }
-                                    </span>
+                    <div className="mt-5">
+                        <FormControl variant="outlined" fullWidth>
 
-                                    <span>
-                                        {
-                                            newRecipient.bank_name
-                                        }
-                                    </span>
-                                </MenuItem>
-                            }
+                            <TextField
+                                label="Bank Name *"
+                                variant="outlined"
+                                name="bank_name"
+                                value={formIk.values.bank_name}
+                                onChange={formIk.handleChange}
+                                onBlur={formIk.handleBlur}
+                                error={formIk.touched.bank_name && Boolean(formIk.errors.bank_name)}
+                                helperText={formIk.touched.bank_name && formIk.errors.bank_name}
+                            />
+                        </FormControl>
+                    </div>
 
+                    <div className="mt-5">
+                        <FormControl variant="outlined" fullWidth>
 
-                        </Select>
-
-                        <FormHelperText>
-                            {formIk.touched.accountNumber && formIk.errors.accountNumber}
-                        </FormHelperText>
-                    </FormControl>
+                            <TextField
+                                label="Routing Number"
+                                variant="outlined"
+                                name="routing_number"
+                                value={formIk.values.routing_number}
+                                onChange={formIk.handleChange}
+                                onBlur={formIk.handleBlur}
+                                error={formIk.touched.routing_number && Boolean(formIk.errors.routing_number)}
+                                helperText={formIk.touched.routing_number && formIk.errors.routing_number}
+                            />
+                        </FormControl>
+                    </div>
                 </div>
 
-                <div className="mt-5">
+
+
+                <div className={'mt-5'}>
                     <FormControl variant="outlined" fullWidth>
                         <TextField
                             label="Recipient Account Number :"
                             type="number"
                             name="accountNumber"
-                            disabled={formIk.values.destination === 'Internal' ? false : true}
-                            value={formIk.values.destination === 'Internal' ? formIk.values.accountNumber : newRecipient.account_number}
+                            value={formIk.values.accountNumber}
                             onChange={formIk.handleChange}
                             onBlur={formIk.handleBlur}
                             error={formIk.touched.accountNumber && Boolean(formIk.errors.accountNumber)}
@@ -250,14 +230,13 @@ export default function TrasferCard({ cards, user_id, user }: any) {
                     </FormControl>
                 </div>
 
-                <div className="mt-5">
+                <div className={`mt-5`}>
                     <FormControl variant="outlined" fullWidth>
 
                         <TextField id="standard-basic"
                             label="Account Name"
                             name="accountName"
-                            disabled={formIk.values.destination === 'Internal' ? false : true}
-                            value={formIk.values.destination === 'Internal' ? formIk.values.accountName : newRecipient.account_name}
+                            value={formIk.values.accountName}
                             onChange={formIk.handleChange}
                             onBlur={formIk.handleBlur}
                             error={formIk.touched.accountName && Boolean(formIk.errors.accountName)}
@@ -348,40 +327,7 @@ export default function TrasferCard({ cards, user_id, user }: any) {
 
             </form>
 
-            <Modal
-                aria-labelledby="transition-modal-title"
-                aria-describedby="transition-modal-description"
-                open={open}
-                onClose={closeModal}
-                closeAfterTransition
-                slots={{ backdrop: Backdrop }}
-                slotProps={{
-                    backdrop: {
-                        timeout: 500,
-                    },
-                }}
-            >
-                <Fade in={open}>
-                    <Box sx={{
-                        position: 'absolute' as 'absolute',
-                        top: '50%',
-                        left: '50%',
-                        transform: 'translate(-50%, -50%)',
-                        width: {
-                            xs: '95%',
-                            md: '30%'
-                        },
-                        bgcolor: 'background.paper',
-                        px: 2,
-                        py: 4,
-                        borderRadius: 2
-                    }}>
 
-
-                        <RecipietCard closeModal={closeModal} doNewRecipient={doNewRecipient} userInfo={user} />
-                    </Box>
-                </Fade>
-            </Modal>
 
 
 
@@ -415,11 +361,11 @@ export default function TrasferCard({ cards, user_id, user }: any) {
                         }} />
                     </div>
                     <p className="text-center text-gray-600 text-xl mt-5">
-                        Your transfer was successful
+                        Your transfer has been Scheduled
                     </p>
 
                     <p className="text-xs text gray-600 text-center mt-1">
-                        (For futher inquiry contact our suport team here)
+                        (Your transactions will be processed within 24 hours and arrive destination account in 2-3 working days)
                     </p>
                     <div className="w-full flex justify-center mt-5">
                         <Button onClick={closeTransfers} variant="outlined" className="">OK</Button>

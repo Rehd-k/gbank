@@ -59,11 +59,11 @@ export default function Header({ props, user, children }: any) {
             title: 'Transactions',
             link: '/clientarea/transactions'
         },
-        {
-            icon: <OutboundTwoTone />,
-            title: 'Withdrawal',
-            link: '/clientarea/withdrawals'
-        },
+        // {
+        //     icon: <OutboundTwoTone />,
+        //     title: 'Withdrawal',
+        //     link: '/clientarea/withdrawals'
+        // },
         {
             icon: <SettingsSuggestTwoToneIcon />,
             title: 'Settings',
@@ -77,7 +77,7 @@ export default function Header({ props, user, children }: any) {
             <Divider />
             <List>
                 {menuList.map((item, index) => (
-                    <ListItem key={index}>
+                    <ListItem key={index} onClick={handleDrawerToggle}>
                         <Link href={item.link}>
                             <ListItemButton>
                                 <ListItemIcon>

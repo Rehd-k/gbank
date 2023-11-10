@@ -37,7 +37,7 @@ export default function UserComponentCard({ user }: any) {
                 }
             }}>
             <div className="text-center text-gray-700 font-bold text-xs md:text-sm pb-5">
-                Peresonal Information
+                Personal Information
             </div>
 
             <div className="text-xs md:text-md px-2">
@@ -203,7 +203,7 @@ export default function UserComponentCard({ user }: any) {
 
                     <div className="mt-4 md:mt-0">
                         <p className="font-bold">
-                            Residenctial State
+                            Residential State
                         </p>
                         <div className="pt-0.5">{user.state}</div>
                     </div>

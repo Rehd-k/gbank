@@ -26,17 +26,18 @@ export async function POST(request: NextRequest) {
 
     if (body.account) {
         const account = await Card.findOne({ account_number: body.account });
+        console.log(account.balance, body.account)
         const curent_amount = Number(account.balance) - body.amount;
         account.balance = curent_amount;
 
         if (body.accountNumber) {
             const recpient = await Card.findOne({ account_number: body.accountNumber });
-            const curent_amount = Number(recpient.balance) + body.amount;
-            recpient.balance = curent_amount;
-
-            await recpient.save()
+            if (recpient) {
+                const curent_amount = Number(recpient.balance) + body.amount;
+                recpient.balance = curent_amount;
+                await recpient.save()
+            }
         }
-
         await account.save();
     }
 

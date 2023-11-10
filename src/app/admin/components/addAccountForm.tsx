@@ -42,7 +42,7 @@ export default function AddAccountForm({ users }: any) {
 
 
     return <>
-        <form onSubmit={formIk.handleSubmit} className="md:w-1/2 px-2 md:px-0">
+        <form onSubmit={formIk.handleSubmit} className="px-2 md:px-0">
 
             <FormControl sx={{ marginTop: 5, minWidth: 120 }} className="w-full">
                 <TextField

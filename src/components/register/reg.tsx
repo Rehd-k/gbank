@@ -107,10 +107,6 @@ export default function RegisterCom() {
 
     return (
         <>
-
-            <div className="h-10 w-full bg-green-900" onClick={checkServer}>
-                do the kin check
-            </div>
             <div className="h-screen md:grid md:grid-cols-2">
                 <div
                     className="relative overflow-hidden md:flex w-full bg-gradient-to-tr from-[#4f0d56] to-purple-800 i justify-around items-center">
