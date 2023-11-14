@@ -92,10 +92,10 @@ export default function Activities({ inArray, out }: any) {
                 </div>
                 <div className="px-1">
                     <Tabs value={value} onChange={handleChange} centered>
-                        <Tab icon={<ListTwoToneIcon />} aria-label="All" />
-                        <Tab icon={<FileDownloadTwoToneIcon />} aria-label="Inward" />
-                        <Tab icon={<FileUploadTwoToneIcon />} aria-label="OutWars" />
-                        <Tab icon={<LockClockOutlined />} aria-label="Forward" />
+                        <Tab icon={<ListTwoToneIcon />} label="All" aria-label="All" />
+                        <Tab icon={<FileDownloadTwoToneIcon />} label="Money In" aria-label="Inward" />
+                        <Tab icon={<FileUploadTwoToneIcon />} label="Money Out" aria-label="OutWars" />
+                        <Tab icon={<LockClockOutlined />} label="Pending" aria-label="Forward" />
                     </Tabs>
 
 
