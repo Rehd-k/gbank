@@ -1,4 +1,5 @@
 'use client'
+import Loader from "@/components/general/modal";
 import { FormControl, InputLabel, Select, MenuItem, FormHelperText, TextField, Button } from "@mui/material";
 import axios from "axios";
 import { useFormik } from "formik";
@@ -34,14 +35,16 @@ const validationSchema = yup.object({
         .date()
         .required("Oga select date nahh"),
     account: yup
-        .date()
+        .number()
+        .required("Select account")
 })
 
 
 export default function CreateTransaction({ users }: any) {
 
     const [accounts, setAccounts] = useState([]);
-    const [disabled, setDisabled] = useState(true)
+    const [disabled, setDisabled] = useState(true);
+    const [isOpen, setIsOpen] = useState(false);
 
 
     const formIk = useFormik({
@@ -79,11 +82,12 @@ export default function CreateTransaction({ users }: any) {
 
 
     const getAccounts = async (value: any) => {
+        setIsOpen(true)
         try {
             const accountsUrl = await axios.get(`/admin/accounts/api/?id=${value}`);
             setAccounts(accountsUrl.data.cards);
-            console.log(accountsUrl.data.cards);
-            if (accounts.length < 1) {
+            setIsOpen(false)
+            if (accountsUrl.data.cards.length  < 1) {
                 setDisabled(true)
             } else {
                 setDisabled(false)
@@ -163,7 +167,7 @@ export default function CreateTransaction({ users }: any) {
 
 
                     <FormHelperText>
-                        {formIk.touched.user_id && Boolean(formIk.errors.user_id)}
+                        {formIk.touched.account && Boolean(formIk.errors.account)}
                     </FormHelperText>
 
                 </FormControl>
@@ -256,6 +260,8 @@ export default function CreateTransaction({ users }: any) {
 
 
         </form>
+
+        <Loader isOpen={isOpen} />
 
         <ToastContainer />
     </>
