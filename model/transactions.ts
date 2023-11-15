@@ -8,6 +8,7 @@ const transactionSchema = new mongoose.Schema({
     },
     title: String,
     amount: Number,
+    to : Number,
     from : Number,
     user: {
         type: Schema.Types.ObjectId,

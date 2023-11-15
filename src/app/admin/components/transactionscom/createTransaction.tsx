@@ -2,8 +2,18 @@
 import { FormControl, InputLabel, Select, MenuItem, FormHelperText, TextField, Button } from "@mui/material";
 import axios from "axios";
 import { useFormik } from "formik";
+import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import * as yup from "yup";
+
+const getAccounts = async (value: string) => {
+    const user = await axios.get(`/accounts/api?id=${value}`)
+    if (user) {
+        return user
+    } else {
+        return null
+    }
+}
 
 
 const validationSchema = yup.object({
@@ -23,10 +33,15 @@ const validationSchema = yup.object({
     date: yup
         .date()
         .required("Oga select date nahh"),
+    account: yup
+        .date()
 })
 
 
 export default function CreateTransaction({ users }: any) {
+
+    const [accounts, setAccounts] = useState([]);
+    const [disabled, setDisabled] = useState(true)
 
 
     const formIk = useFormik({
@@ -36,6 +51,8 @@ export default function CreateTransaction({ users }: any) {
             description: '',
             user_id: '',
             date: null,
+            account: 0,
+            approved : true
         },
         validationSchema: validationSchema,
         onSubmit: async (value) => {
@@ -61,7 +78,20 @@ export default function CreateTransaction({ users }: any) {
     }
 
 
-
+    const getAccounts = async (value: any) => {
+        try {
+            const accountsUrl = await axios.get(`/admin/accounts/api/?id=${value}`);
+            setAccounts(accountsUrl.data.cards);
+            console.log(accountsUrl.data.cards);
+            if (accounts.length < 1) {
+                setDisabled(true)
+            } else {
+                setDisabled(false)
+            }
+        } catch (err) {
+            console.log(err)
+        }
+    }
 
 
     return <>
@@ -69,21 +99,64 @@ export default function CreateTransaction({ users }: any) {
             <div className="">
                 <FormControl variant="outlined" fullWidth>
                     <InputLabel>
-                        Select Account:
+                        Select User:
                     </InputLabel>
                     <Select
-                        label="Select Account:"
+                        label="Select User :"
                         className="pl-1"
                         name="user_id"
                         value={formIk.values.user_id}
                         onBlur={formIk.handleBlur}
-                        onChange={formIk.handleChange}
+                        onChange={(e) => {
+                            getAccounts(e.target.value)
+                            return formIk.handleChange(e)
+                        }}
                         error={formIk.touched.user_id && Boolean(formIk.errors.user_id)}
                     >
                         {users.map((res: any, index: number) => {
                             return <MenuItem key={index} value={res._id}>
                                 {res.username}
                             </MenuItem>
+                        })}
+
+                    </Select>
+
+
+                    <FormHelperText>
+                        {formIk.touched.user_id && Boolean(formIk.errors.user_id)}
+                    </FormHelperText>
+
+                </FormControl>
+            </div>
+
+
+            <div className="mt-5">
+                <FormControl variant="outlined" fullWidth>
+                    <InputLabel>
+                        Select Account:
+                    </InputLabel>
+                    <Select
+                        label="Select Account:"
+                        className="pl-1"
+                        name="account"
+                        type="number"
+                        disabled={disabled}
+                        value={formIk.values.account}
+                        onBlur={formIk.handleBlur}
+                        onChange={formIk.handleChange}
+                        error={formIk.touched.account && Boolean(formIk.errors.account)}
+                    >
+                        {accounts.map((res: any, index: number) => {
+                            return <MenuItem key={index} value={res.account_number} className="flex justify-between">
+                                <div className="">
+                                    {res.account_number}
+                                </div>
+
+                                <div>
+                                    {res.type}
+                                </div>
+                            </MenuItem>
+
                         })}
 
                     </Select>

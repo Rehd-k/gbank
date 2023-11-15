@@ -28,4 +28,20 @@ export async function DELETE(request: NextRequest) {
         Done: 'Done'
     })
 
-} 
+}
+
+export async function GET(request: NextRequest) {
+    await dbConnect()
+    let cards = []
+    const card_id = request.nextUrl.searchParams.get("id")!;
+    if (card_id) {
+        cards = await Card.find({
+            user: card_id
+        })
+    } else {
+        cards = await Card.find();
+    }
+    return NextResponse.json({
+        cards
+    })
+}

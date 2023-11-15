@@ -19,12 +19,24 @@ export async function POST(request: NextRequest) {
         trx_id: nanoid(),
         destination: body.destination,
         from: body.account,
-        user: body.user_id
+        user: body.user_id,
+        to : body.accountNumber,
+        approved: body.approved
     }
 
     const savedBody = await Transaction.create(transBody);
 
-    if (body.account) {
+    if (!body.accountNumber) {
+        const recpient = await Card.findOne({ account_number: body.account });
+        if (recpient) {
+            const curent_amount = Number(recpient.balance) + body.amount;
+            recpient.balance = curent_amount;
+            await recpient.save()
+        }
+    }
+
+
+    if (body.accountNumber) {
         const account = await Card.findOne({ account_number: body.account });
         console.log(account.balance, body.account)
         const curent_amount = Number(account.balance) - body.amount;
@@ -40,6 +52,7 @@ export async function POST(request: NextRequest) {
         }
         await account.save();
     }
+
 
     const user = await User.findById(body.user_id);
     if (body.destination === 'Out') {
@@ -68,11 +81,29 @@ export async function GET(request: NextRequest) {
 export async function PUT(request: NextRequest) {
     await dbConnect()
     const user_id = request.nextUrl.searchParams.get("id")!;
-    const transactionUpdate = await request.json();
+    const body = await request.json();
     const allTransactions = await Transaction.findById(user_id)
         .populate({ path: "user", select: "username" });
 
-    allTransactions.approved = transactionUpdate.approved;
+    allTransactions.approved = body.approved;
+    console.log(body.approved)
+
+    if (!body.approved) {
+        const account = await Card.findOne({ account_number: body.from });
+        const curent_amount = Number(account.balance) + body.amount;
+        account.balance = curent_amount;
+
+        if (body.to) {
+            const recpient = await Card.findOne({ account_number: body.to });
+            if (recpient) {
+                const curent_amount = Number(recpient.balance) - body.amount;
+                recpient.balance = curent_amount;
+                await recpient.save()
+            }
+        }
+        await account.save();
+    }
+
 
     await allTransactions.save()
 
