@@ -6,7 +6,7 @@ import { useEffect, useState } from "react"
 import { toast, ToastContainer } from 'react-toastify';
 import * as yup from 'yup';
 import { useFormik } from "formik";
-import { FormControl, InputAdornment, TextField } from "@mui/material";
+import { Box, FormControl, InputAdornment, Modal, TextField } from "@mui/material";
 import LockIcon from '@mui/icons-material/Lock';
 import LockOpen from "@mui/icons-material/LockOpen";
 import router, { Router } from "next/router";
@@ -24,9 +24,26 @@ const validationSchema = yup.object({
         .min(6, 'Password must be longer than 6'),
 })
 
+
+const style = {
+    position: 'absolute' as 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+};
+
 export default function LoginCom() {
-    const doToast = (e: string) => toast(e)
     const [passType, setPassType] = useState("password")
+    const [openModel, setOpenModal] = useState(false)
+    const [securityQuestion, setSecurityQuestion] = useState("")
+    const [correctAnswer, setCorrectAnswer] = useState("")
+    const [answer, setAnswer] = useState("")
+    const [values, setValues] = useState<any>(null)
 
     const [processing, setProccessing] = useState(false)
 
@@ -48,22 +65,57 @@ export default function LoginCom() {
         },
         validationSchema: validationSchema,
         onSubmit: async (values) => {
-            toast("Logging you In ...", { type: 'info' })
-            signIn("credentials", {
-                username: values.username,
-                password: values.password,
-                redirect: false
-            }).then((res) => {
-                if (res!.error) {
-                    toast(res?.error as string, { type: 'error' })
-                } else {
-                    toast("logged in", { type: "success" })
-                    window.location.replace('clientarea/dashboard')
-                }
-            })
+            setValues(values)
+            try {
+                toast("Checking ...", { type: 'info' })
+                const user = await axios.get(`/register/api?username=${values.username}`)
+                if (user.data.user) {
+                    if (
+                        user.data.user.password === values.password
+                    ) {
+                        setSecurityQuestion(user.data.user.securityQuestion);
+                        setCorrectAnswer(user.data.user.answer)
+                        setOpenModal(true)
+                    } else {
+                        toast("Password and Username Does Not Match")
 
+                    }
+                } else {
+                    toast("Username Does Not Exist")
+                }
+
+            } catch (err) {
+                toast(err as string, { type: 'error' })
+            }
         }
-    })
+    });
+    const checkQuestion = () => {
+        if (correctAnswer !== answer) {
+            toast('Incorrect Try again!')
+            window.location.replace('clientarea/dashboard')
+        } else {
+            toast('Logging You in...')
+            login(values)
+        }
+    }
+
+
+
+    const login = (values: { username: any; password: any; }) => {
+        console.log(values);
+        signIn("credentials", {
+            username: values.username,
+            password: values.password,
+            redirect: false
+        }).then((res) => {
+            if (res!.error) {
+                toast(res?.error as string, { type: 'error' })
+            } else {
+                toast("logged in", { type: "success" })
+                window.location.replace('clientarea/dashboard')
+            }
+        })
+    }
 
     useEffect(() => {
         const user_email = localStorage.getItem("user_email");
@@ -173,7 +225,47 @@ export default function LoginCom() {
                         </form>
                     </div>
                 </div>
+
+
             }
+            <Modal
+                open={openModel}
+                onClose={() => setOpenModal(false)}
+            >
+                <Box sx={style}>
+                    <FormControl sx={{ marginTop: 2, minWidth: 120 }} className="w-full">
+                        <TextField
+                            name="SecurityQuestion"
+                            id="SecurityQuestion"
+                            label="Security Question"
+                            value={securityQuestion}
+                            disabled
+                        />
+                    </FormControl>
+
+                    <FormControl sx={{ marginTop: 2, minWidth: 120 }} className="w-full">
+                        <TextField
+                            name="answer"
+                            id="answer"
+                            label="Security Answer"
+                            onChange={(e) => setAnswer(e.target.value)}
+                        />
+                    </FormControl>
+
+
+
+                    <div className="pt-10 flex justify-around">
+                        <button onClick={() => setOpenModal(false)}>
+                            Close
+                        </button>
+
+
+                        <button onClick={checkQuestion}>
+                            Check
+                        </button>
+                    </div>
+                </Box>
+            </Modal>
             <ToastContainer />
         </>
     )

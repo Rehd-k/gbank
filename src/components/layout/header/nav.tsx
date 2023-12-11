@@ -16,16 +16,14 @@ import Button from '@mui/material/Button';
 import MenuOpenTwoToneIcon from '@mui/icons-material/MenuOpenTwoTone';
 import DashboardCustomizeTwoToneIcon from '@mui/icons-material/DashboardCustomizeTwoTone';
 import SendTwoToneIcon from '@mui/icons-material/SendTwoTone';
-import SimCardDownloadTwoToneIcon from '@mui/icons-material/SimCardDownloadTwoTone';
-import UploadFileTwoToneIcon from '@mui/icons-material/UploadFileTwoTone';
-import AccountCircleTwoToneIcon from '@mui/icons-material/AccountCircleTwoTone';
 import SettingsSuggestTwoToneIcon from '@mui/icons-material/SettingsSuggestTwoTone';
 import Link from 'next/link';
 import Image from 'next/image'
 import { signOut } from 'next-auth/react';
-import { useEffect } from 'react';
 import { Paper } from '@mui/material';
-import { DirectionsTwoTone, Outbound, OutboundTwoTone } from '@mui/icons-material';
+import { DirectionsTwoTone } from '@mui/icons-material';
+import { useIdleTimer } from 'react-idle-timer'
+import { ToastContainer, toast } from 'react-toastify';
 
 const drawerWidth = 240;
 
@@ -35,7 +33,13 @@ export default function Header({ props, user, children }: any) {
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
     };
-
+    useIdleTimer({
+        timeout: 50000,
+        onIdle: () => {
+            toast("Logged out, due to Inactivity")
+            signOut()
+        }
+    })
 
     const date = new Date(Date.now());
     let hours = date.getHours();
@@ -188,6 +192,7 @@ export default function Header({ props, user, children }: any) {
                     </footer>
                 </Box>
             </Box>
+            <ToastContainer />
         </>
     );
 }

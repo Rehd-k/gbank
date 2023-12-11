@@ -23,9 +23,7 @@ export async function GET(request: NextRequest) {
         user = savedUser
     } else if (usernameParam) {
         const savedUser = await User.findOne({
-            where: {
-                username: usernameParam,
-            }
+            username: usernameParam
         })
         user = savedUser
     }
