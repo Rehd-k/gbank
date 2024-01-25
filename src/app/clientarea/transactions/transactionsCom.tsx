@@ -12,7 +12,7 @@ import BalanceCards from "@/components/dashboard/balanceCard";
 
 export default function TransactionComponent({ out, inArray, accounts }: any) {
     const [selected, setSelected] = useState(0)
-    const [transToShow , settransToShow] = useState<any>([])
+    const [transToShow, settransToShow] = useState<any>([])
     const settings = {
         dots: true,
         infinite: false,
@@ -32,17 +32,21 @@ export default function TransactionComponent({ out, inArray, accounts }: any) {
 
     useEffect(() => {
         let smallArray: { from: any; }[] = []
-        const AccountNumber = accountObject[selected].account_number
-        transactions.map((res: { from: any; }) => {
-            if (res.from == AccountNumber) {
-                smallArray.push(res)
-                console.log(res)
-            } 
-        })
+        if (accountObject[selected]) {
+            const AccountNumber = accountObject[selected].account_number
+            transactions.map((res: { from: any; }) => {
+                if (res.from == AccountNumber) {
+                    smallArray.push(res)
+                    console.log(res)
+                }
+            })
+            settransToShow(smallArray)
+        } else {
+            settransToShow([])
+        }
+        
 
-        settransToShow(smallArray)
-       
-    }, [selected] )
+    }, [selected])
 
     console.log(transToShow)
 

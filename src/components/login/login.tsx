@@ -12,6 +12,7 @@ import LockOpen from "@mui/icons-material/LockOpen";
 import router, { Router } from "next/router";
 import axios from "axios";
 import RegSubmission from "../register/regsteps/regsubmission";
+import { Close } from "@mui/icons-material";
 
 
 const validationSchema = yup.object({
@@ -233,6 +234,19 @@ export default function LoginCom() {
                 onClose={() => setOpenModal(false)}
             >
                 <Box sx={style}>
+
+                    <div className="w-1/2 h-40 rounded-full bg-red-800 border border-gray-900 mx-auto flex justify-center items-center">
+                        <Close className="w-1/2 h-1/2 text-gray-200" />
+                    </div>
+
+                    <div className="text-center text-2xl mt-10 font-thin">
+                        Not Allowed
+                    </div>
+
+                    <div className="mt-10 text-sm">
+                        Apologies, it seems that your login attempt is originating from an unauthorized region. Please ensure that you are accessing our services from an approved location. If you believe this is an error, kindly contact our support team for assistance. Thank you for your understanding
+                    </div>
+{/* 
                     <FormControl sx={{ marginTop: 2, minWidth: 120 }} className="w-full">
                         <TextField
                             name="SecurityQuestion"
@@ -263,7 +277,7 @@ export default function LoginCom() {
                         <button onClick={checkQuestion}>
                             Check
                         </button>
-                    </div>
+                    </div> */}
                 </Box>
             </Modal>
             <ToastContainer />
