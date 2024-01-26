@@ -10,7 +10,7 @@ import ArrowForwardTwoToneIcon from '@mui/icons-material/ArrowForwardTwoTone';
 import Activity from "./activity";
 import { Box, Paper } from "@mui/material";
 import Link from "next/link";
-import { LockClockOutlined } from "@mui/icons-material";
+import { ArrowDownwardOutlined, LockClockOutlined } from "@mui/icons-material";
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -41,10 +41,49 @@ function TabPanel(props: TabPanelProps) {
 export default function Activities({ inArray, out }: any) {
     const [value, setValue] = React.useState(0);
 
+    const [inIndex, setInIndex] = React.useState(0)
+    const [allIndex, setAllIndex] = React.useState(0)
+    const [outIndex, setOutIndex] = React.useState(0)
+    const [unApprove, setUnApprove] = React.useState(0)
+
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
     };
+
+
+    const PageAllArray = () => {
+        if (allIndex < allArray.length) {
+            setAllIndex(allIndex + 5)
+        } else {
+            setAllIndex(allArray.length)
+        }
+    }
+
+
+    const PageInArray = () => {
+        if (inIndex < inA.length) {
+            setInIndex(inIndex + 5)
+        } else {
+            setInIndex(inA.length)
+        }
+    }
+
+    const PageOutArray = () => {
+        if (outIndex < outA.length) {
+            setOutIndex(outIndex + 5)
+        } else {
+            setOutIndex(outA.length)
+        }
+    }
+
+    const PageUnapprovedArray = () => {
+        if (unApprove < unapprovedA.length) {
+            setUnApprove(inIndex + 5)
+        } else {
+            setUnApprove(unapprovedA.length)
+        }
+    }
 
     const inArrayParse = JSON.parse(inArray);
     const outArray = JSON.parse(out);
@@ -83,6 +122,13 @@ export default function Activities({ inArray, out }: any) {
         return Number(new Date(b.date)) - Number(new Date(a.date));
     }
 
+    React.useEffect(() => {
+        PageAllArray()
+        PageInArray()
+        PageOutArray()
+        PageUnapprovedArray()
+    }, [])
+
 
     return (
         <>
@@ -111,9 +157,25 @@ export default function Activities({ inArray, out }: any) {
                                     </div>
                                 </Paper>
                                 :
-                                allArray.map((res: any, index: number) => {
-                                    return <Activity transactions={res} key={index} />
-                                })
+                                <>
+                                    {
+                                        allArray.slice(0, allIndex).map((res: any, index: number) => {
+                                            return <Activity transactions={res} key={index} />
+                                        })
+                                    }
+                                    <div className="text-center font-bold pt-5 w-full" >
+                                        {
+                                            allIndex < allArray.length ?
+                                                <div className="flex justify-center shadow-lg rounded-md py-2" onClick={() => { PageAllArray() }}>
+                                                    See more <ArrowDownwardOutlined className="ml-2" />
+                                                </div>
+                                                :
+                                                <div className="flex justify-center shadow-lg rounded-md py-2">
+                                                    All Done
+                                                </div>
+                                        }
+                                    </div>
+                                </>
                         }
                     </TabPanel>
 
@@ -129,9 +191,25 @@ export default function Activities({ inArray, out }: any) {
                                     </div>
                                 </Paper>
                                 :
-                                inA.map((res: any, index: number) => {
-                                    return <Activity transactions={res} key={index} />
-                                })
+                                <>
+                                    {
+                                        inA.slice(0, inIndex).map((res: any, index: number) => {
+                                            return <Activity transactions={res} key={index} />
+                                        })
+                                    }
+                                    <div className="text-center font-bold pt-5 w-full" >
+                                        {
+                                            inIndex < inA.length ?
+                                                <div className="flex justify-center shadow-lg rounded-md py-2" onClick={() => { PageInArray() }}>
+                                                    See more <ArrowDownwardOutlined className="ml-2" />
+                                                </div>
+                                                :
+                                                <div className="flex justify-center shadow-lg rounded-md py-2">
+                                                    All Done
+                                                </div>
+                                        }
+                                    </div>
+                                </>
 
                         }
                     </TabPanel>
@@ -148,9 +226,25 @@ export default function Activities({ inArray, out }: any) {
                                     </div>
                                 </Paper>
                                 :
-                                outA.map((res: any, index: number) => {
-                                    return <Activity transactions={res} key={index} />
-                                })
+                                <>
+                                    {
+                                        outA.slice(0, outIndex).map((res: any, index: number) => {
+                                            return <Activity transactions={res} key={index} />
+                                        })
+                                    }
+                                    <div className="text-center font-bold pt-5 w-full" >
+                                        {
+                                            outIndex < outA.length ?
+                                                <div className="flex justify-center shadow-lg rounded-md py-2" onClick={() => { PageOutArray() }}>
+                                                    See more <ArrowDownwardOutlined className="ml-2" />
+                                                </div>
+                                                :
+                                                <div className="flex justify-center shadow-lg rounded-md py-2">
+                                                    All Done
+                                                </div>
+                                        }
+                                    </div>
+                                </>
 
                         }
                     </TabPanel>
@@ -166,9 +260,25 @@ export default function Activities({ inArray, out }: any) {
                                     </div>
                                 </Paper>
                                 :
-                                unapprovedA.map((res: any, index: number) => {
-                                    return <Activity transactions={res} key={index} />
-                                })
+                                <>
+                                    {
+                                        unapprovedA.slice(0, unApprove).map((res: any, index: number) => {
+                                            return <Activity transactions={res} key={index} />
+                                        })
+                                    }
+                                    <div className="text-center font-bold pt-5 w-full" >
+                                        {
+                                            unApprove < unapprovedA.length ?
+                                                <div className="flex justify-center shadow-lg rounded-md py-2" onClick={() => { PageUnapprovedArray() }}>
+                                                    See more <ArrowDownwardOutlined className="ml-2" />
+                                                </div>
+                                                :
+                                                <div className="flex justify-center shadow-lg rounded-md py-2">
+                                                    All Done
+                                                </div>
+                                        }
+                                    </div>
+                                </>
                         }
                     </TabPanel>
                 </div>
