@@ -21,7 +21,6 @@ export default async function RootLayout({
     }
 
     const user = await User.findById(session?.user.id)
-
     return (
         <Header props={session.user?.name} user={JSON.parse(JSON.stringify(user))}>
 

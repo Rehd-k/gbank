@@ -40,13 +40,17 @@ export default function TransactionComponent({ out, inArray, accounts }: any) {
                     console.log(res)
                 }
             })
-            settransToShow(smallArray)
+            settransToShow(smallArray.sort(sortByDateAsc))
         } else {
             settransToShow([])
         }
         
 
     }, [selected])
+
+    function sortByDateAsc(a: any, b: any) {
+        return Number(new Date(b.date)) - Number(new Date(a.date));
+    }
 
     console.log(transToShow)
 

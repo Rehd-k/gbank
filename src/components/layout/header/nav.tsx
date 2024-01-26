@@ -21,7 +21,7 @@ import Link from 'next/link';
 import Image from 'next/image'
 import { signOut } from 'next-auth/react';
 import { Paper } from '@mui/material';
-import { DirectionsTwoTone } from '@mui/icons-material';
+import { DirectionsTwoTone, LogoutTwoTone } from '@mui/icons-material';
 import { useIdleTimer } from 'react-idle-timer'
 import { ToastContainer, toast } from 'react-toastify';
 
@@ -34,7 +34,6 @@ export default function Header({ props, user, children }: any) {
         setMobileOpen(!mobileOpen);
     };
     useIdleTimer({
-        timeout: 50000,
         onIdle: () => {
             toast("Logged out, due to Inactivity")
             signOut()
@@ -72,6 +71,11 @@ export default function Header({ props, user, children }: any) {
             icon: <SettingsSuggestTwoToneIcon />,
             title: 'Settings',
             link: '/clientarea/settings'
+        },
+        {
+            icon: <LogoutTwoTone />,
+            title: 'Logout',
+            link: '/clientarea/logout'
         }
     ]
 
@@ -175,8 +179,8 @@ export default function Header({ props, user, children }: any) {
                     sx={{ flexGrow: 1, width: { sm: `calc(100% - ${drawerWidth}px)`, backgroundColor: 'white' } }}
                 >
                     <Toolbar />
-                    <Box className="h-16 shadow w-full bg-gray-50 flex items-center pl-2 text-sm capitalize">
-                        {status}, {props}
+                    <Box className="h-16 shadow w-full bg-gray-50 flex items-center pl-2  capitalize md:text-2xl text-base">
+                        {status}, {userInfo.firstName}
                     </Box>
 
                     <Box component="section" sx={{ flexGrow: 1, p: 2 }}>

@@ -45,3 +45,25 @@ export async function GET(request: NextRequest) {
         cards
     })
 }
+
+
+export async function PUT(request: NextRequest) {
+    await dbConnect()
+    const body = await request.json();
+    console.log(body)
+    const cardId = request.nextUrl.searchParams.get("id");
+
+    const cardUpdate = await Card.findById(cardId)
+
+    for (const key in body) {
+        if (cardUpdate[key]) {
+            cardUpdate[key] = body[key]
+        }
+    }
+
+    await cardUpdate.save()
+
+    return NextResponse.json({
+        cardUpdate
+    })
+}

@@ -42,6 +42,8 @@ const validationSchema = yup.object({
         .number()
         .required("Select Amount")
         .min(0, "Amount must be greater than 0"),
+    swift_code: yup
+        .string(),
     recipient: yup.string(),
     accountBalance: yup
         .number(),
@@ -81,6 +83,7 @@ export default function TrasferCard({ cards, user_id, user }: any) {
             frequency: 'one_off',
             recipient: '',
             routing_number: '',
+            swift_code: '',
             amount: 0,
             description: '',
             user_id: user_id,
@@ -166,8 +169,13 @@ export default function TrasferCard({ cards, user_id, user }: any) {
                             <MenuItem value={'Internal'}>
                                 Internal Transfer
                             </MenuItem>
+
                             <MenuItem value={'External'}>
                                 External Transfer
+                            </MenuItem>
+
+                            <MenuItem value={'International'}>
+                                International Transfer
                             </MenuItem>
 
                         </Select>
@@ -178,7 +186,7 @@ export default function TrasferCard({ cards, user_id, user }: any) {
                     </FormControl>
                 </div>
 
-                <div className={`transition-all duration-300 ${formIk.values.destination === 'Internal' ? contrast : extend}`}>
+                <div className={`transition-all duration-300 ${formIk.values.destination === 'External' ? extend : contrast}`}>
 
                     <div className="mt-5">
                         <FormControl variant="outlined" fullWidth>
@@ -208,6 +216,41 @@ export default function TrasferCard({ cards, user_id, user }: any) {
                                 onBlur={formIk.handleBlur}
                                 error={formIk.touched.routing_number && Boolean(formIk.errors.routing_number)}
                                 helperText={formIk.touched.routing_number && formIk.errors.routing_number}
+                            />
+                        </FormControl>
+                    </div>
+                </div>
+
+                <div className={`transition-all duration-300 ${formIk.values.destination === 'International' ? extend : contrast}`}>
+
+                    <div className="mt-5">
+                        <FormControl variant="outlined" fullWidth>
+
+                            <TextField
+                                label="Bank Name *"
+                                variant="outlined"
+                                name="bank_name"
+                                value={formIk.values.bank_name}
+                                onChange={formIk.handleChange}
+                                onBlur={formIk.handleBlur}
+                                error={formIk.touched.bank_name && Boolean(formIk.errors.bank_name)}
+                                helperText={formIk.touched.bank_name && formIk.errors.bank_name}
+                            />
+                        </FormControl>
+                    </div>
+
+                    <div className="mt-5">
+                        <FormControl variant="outlined" fullWidth>
+
+                            <TextField
+                                label="Swift Code"
+                                variant="outlined"
+                                name="swift_code"
+                                value={formIk.values.swift_code}
+                                onChange={formIk.handleChange}
+                                onBlur={formIk.handleBlur}
+                                error={formIk.touched.swift_code && Boolean(formIk.errors.swift_code)}
+                                helperText={formIk.touched.swift_code && formIk.errors.swift_code}
                             />
                         </FormControl>
                     </div>

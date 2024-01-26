@@ -3,7 +3,7 @@
 import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material"
 import axios from "axios"
 import moment from "moment"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { ToastContainer, toast } from "react-toastify"
 
 interface TableData {
@@ -19,6 +19,12 @@ export default function ViewAccounts({ accountList }: any) {
 
 
     const [accounts, setAccounts] = useState<TableData[]>(accountList)
+    const [updatedPrice, setUpdatedPrice] = useState('')
+    const [editable, makeEditable] = useState('')
+
+    useEffect(() => {
+        console.log(accountList)
+    }, [])
 
 
     async function doDelete(res: any) {
@@ -48,6 +54,33 @@ export default function ViewAccounts({ accountList }: any) {
     }
 
 
+    const doUpdate = async (res: any) => {
+        toast('Updating...', {
+            delay: 1,
+            type: 'info',
+
+        })
+
+        const updated = await axios.put(`/admin/accounts/api?id=${res._id}`, {
+            balance: updatedPrice
+        })
+        console.log(updated.data.cardUpdate)
+
+        toast('Updated', {
+            delay: 1,
+            type: 'success'
+        })
+
+        makeEditable("")
+    }
+
+    const handleChange = async (e: any) => {
+        const value = e.target.value
+        console.log(value)
+        setUpdatedPrice(value)
+    }
+
+
 
     return <>
         <TableContainer component={Paper}>
@@ -69,11 +102,11 @@ export default function ViewAccounts({ accountList }: any) {
                         </TableCell>
 
                         <TableCell align="center">
-                            Date
+                            Owner
                         </TableCell>
 
                         <TableCell align="center">
-                            User
+                            Action
                         </TableCell>
 
                         <TableCell align="center">
@@ -95,7 +128,18 @@ export default function ViewAccounts({ accountList }: any) {
                             </TableCell>
 
                             <TableCell align="center">
-                                {row.balance}
+                                {
+                                    editable == row.account_number ?
+                                        <input className="w-full py-2 border pl-1" onChange={handleChange} value={row.balance} />
+                                        :
+                                        <div>
+                                            {
+                                                row.balance
+                                            }
+                                        </div>
+                                }
+
+
                             </TableCell>
 
                             <TableCell align="center">
@@ -107,8 +151,23 @@ export default function ViewAccounts({ accountList }: any) {
                             </TableCell>
 
                             <TableCell align="center">
+                                <div className="flex justify-around">
+                                    <Button variant="outlined" color="error">
+                                        {
+                                            editable == row.account_number ?
+                                                <div onClick={() => { doUpdate(row) }}>
+                                                    Done
+                                                </div>
 
-                                <Button variant="outlined" color="error" onClick={() => { doDelete(row) }}>Delete</Button>
+                                                :
+                                                <div onClick={() => { makeEditable(row.account_number) }}>
+                                                    Edit
+                                                </div>
+                                        }
+                                    </Button>
+                                    <Button variant="outlined" color="error" onClick={() => { doDelete(row) }}>Delete</Button>
+
+                                </div>
 
                             </TableCell>
                         </TableRow>

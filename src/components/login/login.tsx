@@ -13,6 +13,7 @@ import router, { Router } from "next/router";
 import axios from "axios";
 import RegSubmission from "../register/regsteps/regsubmission";
 import { Close } from "@mui/icons-material";
+import Loader from "../general/modal";
 
 
 const validationSchema = yup.object({
@@ -32,6 +33,7 @@ const style = {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: 400,
+    borderRadius: 5,
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
@@ -45,6 +47,7 @@ export default function LoginCom() {
     const [correctAnswer, setCorrectAnswer] = useState("")
     const [answer, setAnswer] = useState("")
     const [values, setValues] = useState<any>(null)
+    const [isOpen, setIsOpen] = useState(false)
 
     const [processing, setProccessing] = useState(false)
 
@@ -68,25 +71,30 @@ export default function LoginCom() {
         onSubmit: async (values) => {
             setValues(values)
             try {
-                toast("Checking ...", { type: 'info' })
+                // toast("Checking ...", { type: 'info' })
+                setIsOpen(true)
                 const user = await axios.get(`/register/api?username=${values.username}`)
                 if (user.data.user) {
                     if (
                         user.data.user.password === values.password
                     ) {
+                        setIsOpen(false)
                         setSecurityQuestion(user.data.user.securityQuestion);
                         setCorrectAnswer(user.data.user.answer)
                         setOpenModal(true)
                     } else {
                         toast("Password and Username Does Not Match")
+                        setIsOpen(false)
 
                     }
                 } else {
                     toast("Username Does Not Exist")
+                    setIsOpen(false)
                 }
 
             } catch (err) {
                 toast(err as string, { type: 'error' })
+                setIsOpen(false)
             }
         }
     });
@@ -99,6 +107,8 @@ export default function LoginCom() {
             login(values)
         }
     }
+
+
 
 
 
@@ -247,15 +257,12 @@ export default function LoginCom() {
                         Apologies, it seems that your login attempt is originating from an unauthorized region. Please ensure that you are accessing our services from an approved location. If you believe this is an error, kindly contact our support team for assistance. Thank you for your understanding
                     </div> */}
 
-                    <FormControl sx={{ marginTop: 2, minWidth: 120 }} className="w-full">
-                        <TextField
-                            name="SecurityQuestion"
-                            id="SecurityQuestion"
-                            label="Security Question"
-                            value={securityQuestion}
-                            disabled
-                        />
-                    </FormControl>
+                    <div className="text-xl font-thin">
+                        Security Question
+                    </div>
+                    <div className="md:text-xl text-sm ">
+                        {securityQuestion}
+                    </div>
 
                     <FormControl sx={{ marginTop: 2, minWidth: 120 }} className="w-full">
                         <TextField
@@ -275,11 +282,12 @@ export default function LoginCom() {
 
 
                         <button onClick={checkQuestion}>
-                            Check
+                            Log In
                         </button>
                     </div>
                 </Box>
             </Modal>
+            <Loader isOpen={isOpen} />
             <ToastContainer />
         </>
     )
