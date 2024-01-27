@@ -130,7 +130,7 @@ export default function ViewAccounts({ accountList }: any) {
                             <TableCell align="center">
                                 {
                                     editable == row.account_number ?
-                                        <input className="w-full py-2 border pl-1" onChange={handleChange} value={row.balance} />
+                                        <input className="w-full py-2 border pl-1" onChange={handleChange} />
                                         :
                                         <div>
                                             {
