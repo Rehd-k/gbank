@@ -214,15 +214,6 @@ export default function UserComponent({ users }: any) {
 
                             <TableCell align="center">
                                 <ButtonGroup>
-                                    <Button color="error" onClick={() => {
-                                        doUpdate(
-                                            {
-
-                                                _id: row._id,
-                                                status: 'blocked'
-                                            }
-                                        )
-                                    }}>Block</Button>
                                     <Button color="info" onClick={() => {
                                         doUpdate(
                                             {

@@ -19,6 +19,7 @@ import * as yup from "yup";
 import { useFormik } from "formik";
 import axios from "axios";
 import Loader from "../general/modal";
+import { useRouter } from 'next/navigation';
 
 const extend = 'text-red-900 mt-5 h-full'
 const contrast = 'h-0 overflow-hidden'
@@ -60,9 +61,8 @@ const validationSchema = yup.object({
 
 
 export default function TrasferCard({ cards, user_id, user }: any) {
-
-
-    const [open, setOpen] = useState(false);
+    const { replace } = useRouter();
+    const [dest, setDestination] = useState('');
     const [openTransfers, setTransferOpen] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
 
@@ -70,7 +70,9 @@ export default function TrasferCard({ cards, user_id, user }: any) {
 
 
     const closeTransfers = () => {
+        formIk.resetForm()
         setTransferOpen(false)
+        replace('/clientarea/dashboard')
     }
 
 
@@ -80,7 +82,7 @@ export default function TrasferCard({ cards, user_id, user }: any) {
             destination: 'Internal',
             accountNumber: 0,
             accountName: '',
-            frequency: 'one_off',
+            frequency: 'One Off',
             recipient: '',
             routing_number: '',
             swift_code: '',
@@ -107,12 +109,13 @@ export default function TrasferCard({ cards, user_id, user }: any) {
         user_id: string;
         out: boolean
     }) => {
+        setDestination(formIk.values.destination)
         value.destination = 'Out'
         await axios.post("/admin/transactions/api", value)
         setIsOpen(false)
         setTransferOpen(true)
 
-        formIk.resetForm()
+
     }
 
     return (
@@ -301,7 +304,7 @@ export default function TrasferCard({ cards, user_id, user }: any) {
                             onChange={formIk.handleChange}
                             error={formIk.touched.frequency && Boolean(formIk.errors.frequency)}
                         >
-                            <MenuItem value='one_off'>
+                            <MenuItem value='One Off'>
                                 One Off
                             </MenuItem>
                             <MenuItem value='intervals'>
@@ -315,7 +318,7 @@ export default function TrasferCard({ cards, user_id, user }: any) {
                     </FormControl>
                 </div>
 
-                <div className={`transition-all duration-300  ${formIk.values.frequency === 'one_off' ? contrast : extend}`}>
+                <div className={`transition-all duration-300  ${formIk.values.frequency === 'One Off' ? contrast : extend}`}>
                     <div className="grid grid-cols-2 gap-5">
                         <FormControl variant="standard" fullWidth>
                             <TextField id="standard-basic" label="From" variant="standard" type="date" />
@@ -363,7 +366,7 @@ export default function TrasferCard({ cards, user_id, user }: any) {
 
                 <div className="w-full flex justify-center mt-5">
                     <Button variant="outlined" className="rounded-lg" type="submit">
-                        {`${formIk.values.frequency === 'one_off' ? 'Make' : 'Schedule'}`} a Transfer
+                        {`${formIk.values.frequency === 'One Off' ? 'Make' : 'Schedule'}`} a Transfer
                     </Button>
                 </div>
 
@@ -403,18 +406,100 @@ export default function TrasferCard({ cards, user_id, user }: any) {
 
                         }} />
                     </div>
+
                     <p className="text-center text-gray-600 text-xl mt-5">
                         Your transfer has been Scheduled
                     </p>
 
-                    <p className="text-xs text gray-600 text-center mt-1">
+                    <div className="">
+                        {dest != 'Internal' ?
+                            <div className="flex justify-between w-full mt-5">
+                                <div className="">
+                                    Bank Name :
+                                </div>
+                                <div className="">
+                                    {formIk.values.bank_name}
+                                </div>
+                            </div> : ''
+                        }
+
+                        {dest == 'External' ?
+                            <div className="flex justify-between w-full mt-2">
+                                <div className="">
+                                    Routing Number :
+                                </div>
+                                <div className="">
+                                    {formIk.values.routing_number}
+                                </div>
+                            </div> : ''}
+                        {dest == 'International' ?
+                            <div className="flex justify-between w-full mt-2">
+                                <div className="">
+                                    Swift Code :
+                                </div>
+                                <div className="">
+                                    {formIk.values.swift_code}
+                                </div>
+
+                            </div> : ''
+                        }
+
+
+                        < div className="flex justify-between w-full mt-2">
+                            <div className="">
+                                Account Number :
+                            </div>
+                            <div className="">
+                                {formIk.values.accountNumber}
+                            </div>
+                        </div>
+
+                        <div className="flex justify-between w-full mt-2">
+                            <div className="">
+                                Account Name :
+                            </div>
+                            <div className="">
+                                {formIk.values.accountName}
+                            </div>
+                        </div>
+
+                        <div className="flex justify-between w-full mt-2">
+                            <div className="">
+                                Frequency :
+                            </div>
+                            <div className="">
+                                {formIk.values.frequency}
+                            </div>
+                        </div>
+
+                        <div className="flex justify-between w-full mt-2">
+                            <div className="">
+                                Amount :
+                            </div>
+                            <div className="">
+                                {formIk.values.account}
+                            </div>
+                        </div>
+
+                        <div className="flex justify-between w-full mt-2">
+                            <div className="">
+                                Description :
+                            </div>
+                            <div className="">
+                                {formIk.values.description}
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <p className="text-xs text gray-600 text-center mt-5">
                         (Your transactions will be processed within 24 hours and arrive destination account in 2-3 working days)
                     </p>
                     <div className="w-full flex justify-center mt-5">
                         <Button onClick={closeTransfers} variant="outlined" className="">OK</Button>
                     </div>
                 </Box>
-            </Modal>
+            </Modal >
 
             <Loader isOpen={isOpen} />
 
