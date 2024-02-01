@@ -20,6 +20,7 @@ import { useFormik } from "formik";
 import axios from "axios";
 import Loader from "../general/modal";
 import { useRouter } from 'next/navigation';
+import { Close } from "@mui/icons-material";
 
 const extend = 'text-red-900 mt-5 h-full'
 const contrast = 'h-0 overflow-hidden'
@@ -65,6 +66,7 @@ export default function TrasferCard({ cards, user_id, user }: any) {
     const [dest, setDestination] = useState('');
     const [openTransfers, setTransferOpen] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
+    const [isSuspended, setIsSuspended] = useState(false);
 
     const accounts = JSON.parse(cards)
 
@@ -74,6 +76,13 @@ export default function TrasferCard({ cards, user_id, user }: any) {
         setTransferOpen(false)
         replace('/clientarea/dashboard')
     }
+
+    const closeSuspended = () => {
+        setIsSuspended(false)
+
+    }
+
+
 
 
     const formIk = useFormik({
@@ -94,8 +103,23 @@ export default function TrasferCard({ cards, user_id, user }: any) {
         },
         validationSchema: validationSchema,
         onSubmit: async (value) => {
-            setIsOpen(true)
-            await doTransfer(value)
+            switch (user.status) {
+                case "suspened":
+                    setIsSuspended(true)
+                    break;
+                case "confirmed":
+                    setIsOpen(true)
+                    await doTransfer(value)
+                    break;
+                case "no Transfer":
+                    setIsSuspended(true)
+                    break;
+
+                default:
+                    setIsSuspended(true)
+                    break;
+            }
+
         }
     })
 
@@ -477,7 +501,7 @@ export default function TrasferCard({ cards, user_id, user }: any) {
                                 Amount :
                             </div>
                             <div className="">
-                                {formIk.values.account}
+                                {formIk.values.amount}
                             </div>
                         </div>
 
@@ -500,6 +524,47 @@ export default function TrasferCard({ cards, user_id, user }: any) {
                     </div>
                 </Box>
             </Modal >
+
+            <Modal
+                open={isSuspended}
+                onClose={closeSuspended}
+                aria-labelledby="child-modal-title"
+                aria-describedby="child-modal-description"
+            >
+                <Box sx={{
+                    position: 'absolute' as 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    width: {
+                        xs: '95%',
+                        md: '50%'
+                    },
+                    bgcolor: 'background.paper',
+                    px: 2,
+                    py: 4,
+                    borderRadius: 2
+                }}>
+                    <div className="w-40 h-40 text-4xl rounded-full bg-red-800 border border-gray-900 mx-auto flex justify-center items-center">
+                        <Close className="w-1/2 h-1/2 text-gray-200" fontSize="inherit" />
+                    </div>
+
+                    <div className="text-center text-3xl mt-5">
+                        Not Allowed
+                    </div>
+
+                    {user.status === "suspened" ?
+                        <div className="mt-5 text-sm text-center">
+                            You cant perform transactions on a suspended account
+                        </div>
+                        :
+                        <div className="mt-5 text-sm text-center">
+                            This opparation is not allowed on this account please contact support for assistance
+                        </div>
+                    }
+
+                </Box>
+            </Modal>
 
             <Loader isOpen={isOpen} />
 

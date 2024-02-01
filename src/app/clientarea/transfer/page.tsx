@@ -14,7 +14,7 @@ export default async function Transfers() {
         user : session?.user.id
     });
     const user = await JSON.parse(JSON.stringify(await User.findById(session?.user.id).select('status',)))
-
+    
 
     const cardString = JSON.stringify(cards)
     return (
