@@ -115,6 +115,10 @@ export default function TrasferCard({ cards, user_id, user }: any) {
                     setIsSuspended(true)
                     break;
 
+                case "restricted":
+                    await checkInternal(value)
+                    break;
+
                 default:
                     setIsSuspended(true)
                     break;
@@ -122,6 +126,15 @@ export default function TrasferCard({ cards, user_id, user }: any) {
 
         }
     })
+
+    const checkInternal = async (transaction: any) => {
+        if (transaction.destination !== 'Internal') {
+            setIsSuspended(true)
+        } else {
+            setIsOpen(true)
+            await doTransfer(transaction)
+        }
+    }
 
     const doTransfer = async (value: {
         account: string;
@@ -501,7 +514,7 @@ export default function TrasferCard({ cards, user_id, user }: any) {
                                 Amount :
                             </div>
                             <div className="">
-                                {formIk.values.amount}
+                                ${formIk.values.amount}
                             </div>
                         </div>
 
@@ -509,7 +522,7 @@ export default function TrasferCard({ cards, user_id, user }: any) {
                             <div className="">
                                 Description :
                             </div>
-                            <div className="">
+                            <div className="md:w-1/2 w-4/5">
                                 {formIk.values.description}
                             </div>
 
@@ -555,12 +568,18 @@ export default function TrasferCard({ cards, user_id, user }: any) {
 
                     {user.status === "suspened" ?
                         <div className="mt-5 text-sm text-center">
-                            You cant perform transactions on a suspended account
+                            You cant perform transactions on a suspended account.
                         </div>
-                        :
-                        <div className="mt-5 text-sm text-center">
-                            This opparation is not allowed on this account please contact support for assistance
-                        </div>
+                        : user.status === "restricted" ?
+                            <div className="mt-5 text-sm text-center">
+                                This account is restricted and only transfers to other Nebula Trust Bank accounts can be processed.
+                            </div>
+                            :
+
+                            <div className="mt-5 text-sm text-center">
+                                This opparation is not allowed on this account please contact support for assistance.
+                            </div>
+
                     }
 
                 </Box>

@@ -21,7 +21,7 @@ import Link from 'next/link';
 import Image from 'next/image'
 import { signOut } from 'next-auth/react';
 import { Paper } from '@mui/material';
-import { Close, DirectionsTwoTone, LogoutTwoTone } from '@mui/icons-material';
+import { Close, DirectionsTwoTone, FastForwardTwoTone, LogoutTwoTone } from '@mui/icons-material';
 import { useIdleTimer } from 'react-idle-timer'
 import { ToastContainer, toast } from 'react-toastify';
 
@@ -63,8 +63,8 @@ export default function Header({ props, user, children }: any) {
             link: '/clientarea/transactions'
         },
         // {
-        //     icon: <OutboundTwoTone />,
-        //     title: 'Withdrawal',
+        //     icon: <FastForwardTwoTone />,
+        //     title: 'Insatnt Deposit',
         //     link: '/clientarea/withdrawals'
         // },
         {
@@ -102,7 +102,7 @@ export default function Header({ props, user, children }: any) {
 
     return (
         <>
-            {userInfo.status === "blocked" ?
+            {userInfo.status === "closed" ?
                 <div className="flex justify-center items-center h-screen">
                     <div className="px-5">
                         <div className="w-40 h-40 rounded-full bg-red-800 border border-gray-900 mx-auto flex justify-center items-center">
@@ -114,106 +114,123 @@ export default function Header({ props, user, children }: any) {
                         </div>
 
                         <div className="mt-10 text-sm text-center">
-                            Apologies, it seems that your login attempt is originating from an unauthorized region. Please ensure that you are accessing our services from an approved location. If you believe this is an error, kindly contact our support team for assistance. Thank you for your understanding
+                            Apologies, it seems that your login attempt is originating from an unauthorized region. Please ensure that you are accessing our services from an approved location. If you believe this is an error, kindly contact our support team for assistance. Thank you for your understanding.
                         </div>
                     </div>
                 </div>
-                : <Box sx={{
-                    display:
-                        { xs: 'block', sm: 'flex' }, backgroundColor: 'white'
-                }}>
-                    <CssBaseline />
+                : userInfo.status === "blocked" ?
+                    <div className="flex justify-center items-center h-screen">
+                        <div className="px-5">
+                            <div className="w-40 h-40 rounded-full bg-red-800 border border-gray-900 mx-auto flex justify-center items-center">
+                                <Close className="w-1/2 h-1/2 text-gray-200" />
+                            </div>
 
-                    <AppBar
-                        sx={{
-                            width: { sm: `calc(100% - ${drawerWidth}px)` },
-                            ml: { sm: `${drawerWidth}px` },
-                            backgroundColor: '#4f0d56',
-                            // top: user.status === "suspened" ? 60 : 0
-                        }}
-                    >
-                        <Toolbar className='flex justify-between'>
-                            <IconButton
-                                color="inherit"
-                                aria-label="open drawer"
-                                edge="start"
-                                onClick={handleDrawerToggle}
-                                sx={{ mr: 2, display: { sm: 'none' } }}
+                            <div className="text-center text-2xl mt-10 font-thin">
+                                Account Blocked
+                            </div>
+
+                            <div className="mt-10 text-sm text-center">
+                                Apologies, your account have been blocked, please walk into a branch close to you as soon as possible to reactivate your account.
+                            </div>
+                        </div>
+                    </div>
+                    :
+                    <Box sx={{
+                        display:
+                            { xs: 'block', sm: 'flex' }, backgroundColor: 'white'
+                    }}>
+                        <CssBaseline />
+
+                        <AppBar
+                            sx={{
+                                width: { sm: `calc(100% - ${drawerWidth}px)` },
+                                ml: { sm: `${drawerWidth}px` },
+                                backgroundColor: '#4f0d56',
+                                // top: user.status === "suspened" ? 60 : 0
+                            }}
+                        >
+                            <Toolbar className='flex justify-between'>
+                                <IconButton
+                                    color="inherit"
+                                    aria-label="open drawer"
+                                    edge="start"
+                                    onClick={handleDrawerToggle}
+                                    sx={{ mr: 2, display: { sm: 'none' } }}
+                                >
+                                    <MenuOpenTwoToneIcon fontSize='small' />
+                                </IconButton>
+                                <Image src="/wp-content/themes/chelseagroton-2023/public/images/logo_transparent.png" width="100" height="10" alt="Bank logo" className='rounded' />
+
+                                <Button variant="outlined" size="medium" style={{
+                                    borderRadius: 100,
+                                    backgroundColor: "#4f0d56",
+                                    color: 'white',
+                                    borderColor: 'whitesmoke'
+
+                                }} className='text-xs' onClick={() => signOut()}>
+                                    Log Out
+                                </Button>
+                            </Toolbar>
+                        </AppBar>
+                        <Box
+                            component="nav"
+                            sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}>
+                            <Drawer
+
+                                variant="temporary"
+                                open={mobileOpen}
+                                onClose={handleDrawerToggle}
+                                ModalProps={{
+                                    keepMounted: true,
+                                }}
+                                sx={{
+                                    display: { xs: 'block', sm: 'none' },
+                                    '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+                                }}
                             >
-                                <MenuOpenTwoToneIcon fontSize='small' />
-                            </IconButton>
-                            <Image src="/wp-content/themes/chelseagroton-2023/public/images/logo_transparent.png" width="100" height="10" alt="Bank logo" className='rounded' />
-
-                            <Button variant="outlined" size="medium" style={{
-                                borderRadius: 100,
-                                backgroundColor: "#4f0d56",
-                                color: 'white',
-                                borderColor: 'whitesmoke'
-
-                            }} className='text-xs' onClick={() => signOut()}>
-                                Log Out
-                            </Button>
-                        </Toolbar>
-                    </AppBar>
-                    <Box
-                        component="nav"
-                        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}>
-                        <Drawer
-
-                            variant="temporary"
-                            open={mobileOpen}
-                            onClose={handleDrawerToggle}
-                            ModalProps={{
-                                keepMounted: true,
-                            }}
-                            sx={{
-                                display: { xs: 'block', sm: 'none' },
-                                '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
-                            }}
-                        >
-                            {drawer}
-                        </Drawer>
-                        <Drawer
-                            variant="permanent"
-                            sx={{
-                                display: { xs: 'none', sm: 'block' },
-                                '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
-                            }}
-                            open
-                        >
-                            {drawer}
-                        </Drawer>
-                    </Box>
-
-                    <Box
-                        component="main"
-                        sx={{ flexGrow: 1, width: { sm: `calc(100% - ${drawerWidth}px)`, backgroundColor: 'white' } }}
-                    >
-                        <Toolbar />
-                        <Box className="h-16 shadow w-full bg-gray-50 flex items-center pl-2  capitalize md:text-3xl text-base font-thin">
-                            {status}, {userInfo.firstName}
+                                {drawer}
+                            </Drawer>
+                            <Drawer
+                                variant="permanent"
+                                sx={{
+                                    display: { xs: 'none', sm: 'block' },
+                                    '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+                                }}
+                                open
+                            >
+                                {drawer}
+                            </Drawer>
                         </Box>
 
+                        <Box
+                            component="main"
+                            sx={{ flexGrow: 1, width: { sm: `calc(100% - ${drawerWidth}px)`, backgroundColor: 'white' } }}
+                        >
+                            <Toolbar />
+                            <Box className="h-16 shadow w-full bg-gray-50 flex items-center pl-2  capitalize md:text-3xl text-base font-thin">
+                                {status}, {userInfo.firstName}
+                            </Box>
 
 
-                        <Box component="section" sx={{ flexGrow: 1, p: 2 }}>
-                            {user.status === "suspened" ?
-                                <div className="from-red-700 rounded-md md:p-10 p-5 mb-5 bg-gradient-to-r to-red-600 text-gray-300 font-bold py-4 w-full top-0">
-                                    For Your Security, access to this account has been suspended due to suspicious activities. For assistance please contact out customer service agent through the live chat button below
-                                </div> : ''
-                            }
-                            {children}
+
+                            <Box component="section" sx={{ flexGrow: 1, p: 2 }}>
+                                {user.status === "suspened" ?
+                                    <div className="from-red-700 rounded-md md:p-10 p-5 mb-5 bg-gradient-to-r to-red-600 text-gray-300 font-bold py-4 w-full top-0">
+                                        For Your Security, access to this account has been suspended due to suspicious activities. For assistance please contact out customer service agent through the live chat button below
+                                    </div> : ''
+                                }
+                                {children}
+                            </Box>
+
+                            <footer>
+                                <Paper sx={{
+                                    py: 2
+                                }}>
+
+                                </Paper>
+                            </footer>
                         </Box>
-
-                        <footer>
-                            <Paper sx={{
-                                py: 2
-                            }}>
-
-                            </Paper>
-                        </footer>
                     </Box>
-                </Box>
 
             }
 

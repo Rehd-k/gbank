@@ -124,7 +124,9 @@ const UserSchema = new mongoose.Schema({
             'blocked',
             'no Transfer',
             'confirmed',
-            'suspened'
+            'suspened',
+            'restricted',
+            'closed'
         ]
     },
     securityQuestion: {

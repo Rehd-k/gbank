@@ -213,7 +213,9 @@ export default function UserComponent({ users }: any) {
                             </TableCell>
 
                             <TableCell align="center">
-                                <ButtonGroup>
+                                <ButtonGroup
+                                    orientation="vertical"
+                                >
                                     <Button color="info" onClick={() => {
                                         doUpdate(
                                             {
@@ -257,6 +259,30 @@ export default function UserComponent({ users }: any) {
                                             )
                                         }}
                                     >suspend</Button>
+
+                                    <Button color="error"
+                                        onClick={() => {
+                                            doUpdate(
+                                                {
+
+                                                    _id: row._id,
+                                                    status: 'restricted'
+                                                }
+                                            )
+                                        }}
+                                    >Restricted</Button>
+
+                                    <Button color="error"
+                                        onClick={() => {
+                                            doUpdate(
+                                                {
+
+                                                    _id: row._id,
+                                                    status: 'closed'
+                                                }
+                                            )
+                                        }}
+                                    >Closed</Button>
                                 </ButtonGroup>
                             </TableCell>
                         </TableRow>
