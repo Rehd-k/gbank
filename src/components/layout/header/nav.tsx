@@ -24,6 +24,7 @@ import { Paper } from '@mui/material';
 import { Close, DirectionsTwoTone, FastForwardTwoTone, LogoutTwoTone } from '@mui/icons-material';
 import { useIdleTimer } from 'react-idle-timer'
 import { ToastContainer, toast } from 'react-toastify';
+import Script from 'next/script';
 
 const drawerWidth = 240;
 
@@ -102,6 +103,23 @@ export default function Header({ props, user, children }: any) {
 
     return (
         <>
+            <Script
+                defer
+                id="show-livechat"
+                type="text/javascript"
+                dangerouslySetInnerHTML={{
+                    __html: `var _smartsupp = _smartsupp || { };
+                    _smartsupp.key = 'd9fa16a4a9d9f4db82306a1a5530b328457cc0f8';
+                    window.smartsupp||(function(d) {
+      var s,c,o=smartsupp=function(){o._.push(arguments)};o._=[];
+                    s=d.getElementsByTagName('script')[0];c=d.createElement('script');
+                    c.type='text/javascript';c.charset='utf-8';c.async=true;
+                    c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
+    })(document) ` }}
+                onLoad={() => {
+                    console.log('Script has loaded')
+                }}
+            />
             {userInfo.status === "closed" ?
                 <div className="flex justify-center items-center h-screen">
                     <div className="px-5">

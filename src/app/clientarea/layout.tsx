@@ -24,10 +24,7 @@ export default async function RootLayout({
     const user = await User.findById(session?.user.id)
     return (
         <Header props={session.user?.name} user={JSON.parse(JSON.stringify(user))}>
-            <Script
-                strategy="lazyOnload"
-                src="https://embed.tawk.to/65b7fddd8d261e1b5f593710/1hlbbfai7"
-            />
+           
             {children}
             <ToastContainer />
         </Header>
