@@ -105,22 +105,41 @@ export default function TrasferCard({ cards, user_id, user }: any) {
         onSubmit: async (value) => {
             switch (user.status) {
                 case "suspened":
-                    setIsSuspended(true)
+                    setIsOpen(true)
+                    setTimeout(() => {
+                        setIsOpen(false)
+                        setIsSuspended(true)
+                    }, 2000);
+                
                     break;
                 case "confirmed":
                     setIsOpen(true)
                     await doTransfer(value)
                     break;
                 case "no Transfer":
-                    setIsSuspended(true)
+                    setIsOpen(true)
+                    setTimeout(() => {
+                        setIsOpen(false)
+                        setIsSuspended(true)
+                    }, 2000);
+                    
                     break;
 
                 case "restricted":
+                    setIsOpen(true)
+                    setTimeout(() => {
+                        setIsOpen(false)
+                    }, 2000);
                     await checkInternal(value)
                     break;
 
                 default:
-                    setIsSuspended(true)
+                    setIsOpen(true)
+                    setTimeout(() => {
+                        setIsOpen(false)
+                        setIsSuspended(true)
+                    }, 2000);
+                    
                     break;
             }
 
