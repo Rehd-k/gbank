@@ -124,8 +124,8 @@ export default function RegStepTwo({ moveFront, moveBack, index }: any) {
         </FormControl>
 
         <FormControl sx={{ marginTop: 2, minWidth: 120 }} className="w-full">
-            <TextField
-                className="outline-none border-none"
+            <InputLabel>ID card Type *</InputLabel>
+            <Select
                 type="text"
                 name="id_card_type"
                 id=""
@@ -135,15 +135,24 @@ export default function RegStepTwo({ moveFront, moveBack, index }: any) {
                 onChange={formIk.handleChange}
                 onBlur={formIk.handleBlur}
                 error={formIk.touched.id_card_type && Boolean(formIk.errors.id_card_type)}
-                helperText={formIk.touched.id_card_type && formIk.errors.id_card_type}
-            />
+            >
+                <MenuItem value={'driver license '}>Driver License </MenuItem>
+                <MenuItem value={'passport'}>Passport</MenuItem>
+                <MenuItem value={'government issued id'}>Government Issued ID</MenuItem>
+            </Select>
+
+            <FormHelperText>
+                {formIk.touched.id_card_type && formIk.errors.id_card_type}
+            </FormHelperText>
         </FormControl>
+
+
 
 
         <FormControl sx={{ marginTop: 2, minWidth: 120 }} className="w-full">
             <TextField
                 className="outline-none border-none"
-                type="number"
+                type="text"
                 name="id_card_number"
                 id=""
                 label="ID card Number *"

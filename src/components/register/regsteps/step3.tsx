@@ -177,7 +177,7 @@ export default function RegStepThree({ moveFront, moveBack, index }: any) {
             <FormControl sx={{ marginTop: 2, minWidth: 120 }} className="w-full">
                 <TextField
                     label="Phone Number"
-                    type="number"
+                    type="tel"
                     name="phone_no"
                     placeholder="Phone Number"
 

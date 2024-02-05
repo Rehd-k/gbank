@@ -568,7 +568,7 @@ export default function TrasferCard({ cards, user_id, user }: any) {
 
                     {user.status === "suspened" ?
                         <div className="mt-5 text-sm text-center">
-                            You cant perform transactions on a suspended account.
+                            You can not perform transactions on a suspended account.
                         </div>
                         : user.status === "restricted" ?
                             <div className="mt-5 text-sm text-center">
@@ -577,7 +577,7 @@ export default function TrasferCard({ cards, user_id, user }: any) {
                             :
 
                             <div className="mt-5 text-sm text-center">
-                                This opparation is not allowed on this account please contact support for assistance.
+                                This oparation is not allowed on this account please contact support for assistance.
                             </div>
 
                     }

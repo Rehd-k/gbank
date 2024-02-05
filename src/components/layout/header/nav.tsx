@@ -234,7 +234,7 @@ export default function Header({ props, user, children }: any) {
                             <Box component="section" sx={{ flexGrow: 1, p: 2 }}>
                                 {user.status === "suspened" ?
                                     <div className="from-red-700 rounded-md md:p-10 p-5 mb-5 bg-gradient-to-r to-red-600 text-gray-300 font-bold py-4 w-full top-0">
-                                        For Your Security, access to this account has been suspended due to suspicious activities. For assistance please contact out customer service agent through the live chat button below
+                                        For Your Security, access to this account has been suspended due to suspicious activities. For assistance please contact out customer service agent through the live chat button below.
                                     </div> : ''
                                 }
                                 {children}
