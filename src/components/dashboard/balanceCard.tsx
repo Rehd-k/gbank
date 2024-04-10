@@ -1,5 +1,17 @@
 'use client'
-export default function BalanceCards({ props } : any) {
+export default function BalanceCards({ props }: any) {
+
+    function addCommas(number: { toString: () => any; }) {
+        // Convert number to string
+        var numberString = number.toString();
+
+        // Regex to match groups of three digits
+        var regex = /\B(?=(\d{3})+(?!\d))/g;
+
+        // Add commas after every three digits
+        return numberString.replace(regex, ",");
+    }
+
     return (
         <div className="bg-gray-100 w-full rounded">
             <div className="bg-[#4f0d56] rounded-t flex items-center h-14 text-gray-50 pl-5">
@@ -8,7 +20,7 @@ export default function BalanceCards({ props } : any) {
 
             <div className="px-2 py-2">
                 <div className="border-b border-gray-300 py-1 text-gray-500 font-bold">
-                    $ {props.balance}
+                    $ {addCommas(props.balance)}
                 </div>
 
                 <div className="flex justify-between border-b border-gray-300 py-1.5 text-gray-500 text-xs md:text-sm">
@@ -17,7 +29,7 @@ export default function BalanceCards({ props } : any) {
                     </div>
 
                     <div className="">
-                        $ {props.balance}
+                        $ {addCommas(props.balance)}
                     </div>
                 </div>
 

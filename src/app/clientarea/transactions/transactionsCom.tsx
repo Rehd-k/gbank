@@ -52,7 +52,17 @@ export default function TransactionComponent({ out, inArray, accounts }: any) {
         return Number(new Date(b.date)) - Number(new Date(a.date));
     }
 
-    console.log(transToShow)
+    function addCommas(number: { toString: () => any; }) {
+        // Convert number to string
+        var numberString = number.toString();
+
+        // Regex to match groups of three digits
+        var regex = /\B(?=(\d{3})+(?!\d))/g;
+
+        // Add commas after every three digits
+        return numberString.replace(regex, ",");
+    }
+
 
 
 
@@ -109,7 +119,7 @@ export default function TransactionComponent({ out, inArray, accounts }: any) {
                             </TableCell>
 
                             <TableCell align="center">
-                                {row.amount}
+                                ${addCommas(row.amount)}
                             </TableCell>
 
                             <TableCell align="center">

@@ -174,6 +174,19 @@ export default function TrasferCard({ cards, user_id, user }: any) {
 
     }
 
+
+    function addCommas(number: { toString: () => any; }) {
+        // Convert number to string
+        var numberString = number.toString();
+
+        // Regex to match groups of three digits
+        var regex = /\B(?=(\d{3})+(?!\d))/g;
+
+        // Add commas after every three digits
+        return numberString.replace(regex, ",");
+    }
+
+
     return (
         <>
             <form className="w-full pt-5 pb-10 px-5 rounded-md bg-gray-50 border border-blue-700 mt-5" onSubmit={formIk.handleSubmit}>
@@ -197,7 +210,7 @@ export default function TrasferCard({ cards, user_id, user }: any) {
 
                                     <div className="">{res.account_number}</div>
 
-                                    <div className="">$ {res.balance}</div>
+                                    <div className="">$ {addCommas(res.balance)}</div>
 
                                 </MenuItem>
                             })}
@@ -533,7 +546,7 @@ export default function TrasferCard({ cards, user_id, user }: any) {
                                 Amount :
                             </div>
                             <div className="">
-                                ${formIk.values.amount}
+                                ${addCommas(formIk.values.amount)}
                             </div>
                         </div>
 

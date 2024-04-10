@@ -3,6 +3,18 @@ import { Paper } from '@mui/material'
 import moment from 'moment'
 export default function Activity({ transactions }: any) {
 
+    
+    function addCommas(number: { toString: () => any; }) {
+        // Convert number to string
+        var numberString = number.toString();
+
+        // Regex to match groups of three digits
+        var regex = /\B(?=(\d{3})+(?!\d))/g;
+
+        // Add commas after every three digits
+        return numberString.replace(regex, ",");
+    }
+
     return (
         <div className="w-full mt-6">
             <Paper>
@@ -15,7 +27,7 @@ export default function Activity({ transactions }: any) {
                         {transactions.title}
                     </div>
                     <div className="">
-                        ${transactions.amount}
+                        ${addCommas(transactions.amount)}
                     </div>
                 </div>
             </Paper>
