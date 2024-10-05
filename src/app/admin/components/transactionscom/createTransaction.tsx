@@ -45,6 +45,7 @@ export default function CreateTransaction({ users }: any) {
     const [accounts, setAccounts] = useState([]);
     const [disabled, setDisabled] = useState(true);
     const [isOpen, setIsOpen] = useState(false);
+    const usersList = JSON.parse(users)
 
 
     const formIk = useFormik({
@@ -69,7 +70,7 @@ export default function CreateTransaction({ users }: any) {
             toast("creating", {
                 type: 'info'
             })
-            await axios.post("/admin/transactions/api", value)
+            await axios.post("/admin/createtransactions/api", value)
             toast('created', {
                 type: 'success'
             })
@@ -117,7 +118,7 @@ export default function CreateTransaction({ users }: any) {
                         }}
                         error={formIk.touched.user_id && Boolean(formIk.errors.user_id)}
                     >
-                        {users.map((res: any, index: number) => {
+                        {usersList.map((res: any, index: number) => {
                             return <MenuItem key={index} value={res._id}>
                                 {res.username}
                             </MenuItem>
