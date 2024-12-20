@@ -167,7 +167,7 @@ export default function TrasferCard({ cards, user_id, user }: any) {
     }) => {
         setDestination(formIk.values.destination)
         value.destination = 'Out'
-        await axios.post("/admin/transactions/api", value)
+        await axios.post("/admin/createtransactions/api", value)
         setIsOpen(false)
         setTransferOpen(true)
 
