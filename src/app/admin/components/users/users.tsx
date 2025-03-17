@@ -40,6 +40,7 @@ export default function UserComponent({ users }: any) {
 
     const userParse = JSON.parse(users)
     const [user, setUser] = useState<userInterface[]>(userParse);
+    const [filteredUsers, setFilteredUser] = useState<userInterface[]>(user);
 
     async function doUpdate(res: userInterface) {
 
@@ -64,7 +65,60 @@ export default function UserComponent({ users }: any) {
         }
     }
 
+    async function doDelete(res: userInterface) {
+        try {
+            toast('Deleting...', {
+                delay: 1,
+                type: 'info',
+            })
+
+            await axios.delete(`/admin/users/api?id=${res._id}`)
+
+            toast('Deleted', {
+                delay: 1,
+                type: 'success',
+            })
+        } catch (err: any) {
+            toast(err.message, {
+                type: 'error'
+            })
+        }
+    }
+
+    function searchUsers(query: string) {
+        const lowerCaseQuery = query.toLowerCase();
+        const filteredUsers = user.filter((u) => {
+            return (
+                (u.firstName && u.firstName.toLowerCase().includes(lowerCaseQuery)) ||
+                (u.lastName && u.lastName.toLowerCase().includes(lowerCaseQuery)) ||
+                (u.username && u.username.toLowerCase().includes(lowerCaseQuery)) ||
+                (u.email && u.email.toLowerCase().includes(lowerCaseQuery)) ||
+                (u.nationality && u.nationality.toLowerCase().includes(lowerCaseQuery)) ||
+                (u.country && u.country.toLowerCase().includes(lowerCaseQuery)) ||
+                (u.state && u.state.toLowerCase().includes(lowerCaseQuery)) ||
+                (u.city && u.city.toLowerCase().includes(lowerCaseQuery)) ||
+                (u.status && u.status.toLowerCase().includes(lowerCaseQuery))
+            );
+        });
+        setFilteredUser(filteredUsers);
+    }
+
     return <>
+        <div style={{ marginBottom: '20px' }}>
+            <input
+                type="text"
+                placeholder="Search users..."
+                onChange={(e) => searchUsers(e.target.value)}
+                style={{
+                    width: '100%',
+                    padding: '10px',
+                    fontSize: '16px',
+                    borderRadius: '4px',
+                    border: '1px solid #ccc',
+                    boxSizing: 'border-box'
+                }}
+            />
+        </div>
         <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650, width: '100%' }}>
                 <TableHead>
@@ -132,7 +186,7 @@ export default function UserComponent({ users }: any) {
                 </TableHead>
 
                 <TableBody>
-                    {user.map((row: userInterface, index: number) => {
+                    {filteredUsers.map((row: userInterface, index: number) => {
                         return <TableRow
                             key={index}
                             sx={{
@@ -209,7 +263,7 @@ export default function UserComponent({ users }: any) {
                             </TableCell>
 
                             <TableCell align="center">
-                                {row.createdOn}
+                                {moment(row.createdOn).format('DD/MM/YYYY')}
                             </TableCell>
 
                             <TableCell align="center">
@@ -283,6 +337,18 @@ export default function UserComponent({ users }: any) {
                                             )
                                         }}
                                     >Closed</Button>
+
+                                    <Button color="error"
+                                        onClick={() => {
+                                            doDelete(
+                                                {
+
+                                                    _id: row._id,
+                                                    status: 'closed'
+                                                }
+                                            )
+                                        }}
+                                    >Delete</Button>
                                 </ButtonGroup>
                             </TableCell>
                         </TableRow>

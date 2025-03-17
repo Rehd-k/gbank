@@ -22,3 +22,18 @@ export async function PUT(request: NextRequest) {
     })
 
 }
+
+
+export async function DELETE(request: NextRequest) {
+    try {
+        await dbConnect()
+        const userId = request.nextUrl.searchParams.get("id");
+        console.log(userId)
+        const userUpdate = await User.findByIdAndDelete(userId)
+        return NextResponse.json({})
+    } catch (err) {
+        return NextResponse.error();
+    }
+
+
+}
