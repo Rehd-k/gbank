@@ -4,7 +4,7 @@ import BalanceCards from "./balanceCard";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-export default function Topcarosel({ accounts }: any) {
+export default function Topcarosel({ accounts, currency }: any) {
     const settings = {
         dots: true,
         infinite: false,
@@ -20,7 +20,7 @@ export default function Topcarosel({ accounts }: any) {
         <div className="w-full">
             <Slider {...settings}>
                 {accountObject.map((res: any, index: number) => {
-                    return <BalanceCards key={index} props={res} />
+                    return <BalanceCards key={index} props={res} currency={currency} />
                 })}
             </Slider>
         </div>

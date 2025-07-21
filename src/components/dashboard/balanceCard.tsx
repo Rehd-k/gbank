@@ -1,5 +1,5 @@
 'use client'
-export default function BalanceCards({ props }: any) {
+export default function BalanceCards({ props, currency }: any) {
 
     function addCommas(number: { toString: () => any; }) {
         // Convert number to string
@@ -20,7 +20,7 @@ export default function BalanceCards({ props }: any) {
 
             <div className="px-2 py-2">
                 <div className="border-b border-gray-300 py-1 text-gray-500 font-bold">
-                    $ {addCommas(props.balance)}
+                    {currency} {addCommas(props.balance)}
                 </div>
 
                 <div className="flex justify-between border-b border-gray-300 py-1.5 text-gray-500 text-xs md:text-sm">
@@ -29,7 +29,7 @@ export default function BalanceCards({ props }: any) {
                     </div>
 
                     <div className="">
-                        $ {addCommas(props.balance)}
+                        {currency} {addCommas(props.balance)}
                     </div>
                 </div>
 

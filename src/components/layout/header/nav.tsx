@@ -179,8 +179,9 @@ export default function Header({ props, user, children }: any) {
                                     >
                                         <MenuOpenTwoToneIcon fontSize='small' />
                                     </IconButton>
-                                    <Image src="/wp-content/themes/chelseagroton-2023/public/images/logo_transparent.png" width="100" height="10" alt="Bank logo" className='rounded' />
-
+                                    <Link href={'/'}>
+                                        <Image src="/wp-content/themes/chelseagroton-2023/public/images/logo_transparent.png" width="100" height="10" alt="Bank logo" className='rounded' />
+                                    </Link>
                                     <Button variant="outlined" size="medium" style={{
                                         borderRadius: 100,
                                         backgroundColor: "#4f0d56",
@@ -256,7 +257,7 @@ export default function Header({ props, user, children }: any) {
 
 
 
-                < ToastContainer />
+            < ToastContainer />
         </>
     );
 }

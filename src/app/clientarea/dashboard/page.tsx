@@ -16,17 +16,19 @@ export default async function dahsboard() {
         .populate("in")
         .populate("out");
 
+    console.log(user)
+
     const inArray = JSON.stringify(user.in);
     const out = JSON.stringify(user.out)
     const accountString = JSON.stringify(user.cards)
     return (
         <div className="w-full">
-            <Topcarosel accounts={accountString} />
+            <Topcarosel accounts={accountString} currency={user.currency ?? '$'} />
 
             <SecondSection />
 
 
-            <Activities inArray={inArray} out={out} />
+            <Activities inArray={inArray} out={out} currency={user.currency ?? '$'} />
 
         </div>
 

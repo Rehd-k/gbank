@@ -10,7 +10,7 @@ import BalanceCards from "@/components/dashboard/balanceCard";
 
 
 
-export default function TransactionComponent({ out, inArray, accounts }: any) {
+export default function TransactionComponent({ out, inArray, accounts, currency }: any) {
     const [selected, setSelected] = useState(0)
     const [transToShow, settransToShow] = useState<any>([])
     const settings = {
@@ -71,7 +71,7 @@ export default function TransactionComponent({ out, inArray, accounts }: any) {
         <div className="w-full pb-10">
             <Slider {...settings} afterChange={checkContentsOfEvent}>
                 {accountObject.map((res: any, index: number) => {
-                    return <BalanceCards key={index} props={res} />
+                    return <BalanceCards key={index} props={res} currency={currency} />
                 })}
             </Slider>
         </div>
@@ -119,7 +119,7 @@ export default function TransactionComponent({ out, inArray, accounts }: any) {
                             </TableCell>
 
                             <TableCell align="center">
-                                ${addCommas(row.amount)}
+                                {currency}{addCommas(row.amount)}
                             </TableCell>
 
                             <TableCell align="center">

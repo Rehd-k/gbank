@@ -19,7 +19,7 @@ export default async function Transactions() {
     const accountString = JSON.stringify(user.cards)
     return <>
         <div className="mt-10">
-            <TransactionComponent out={out} inArray={inArray} accounts={accountString} />
+            <TransactionComponent out={out} inArray={inArray} accounts={accountString} currency={user.currency ?? '$'} />
         </div>
 
     </>

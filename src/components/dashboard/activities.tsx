@@ -38,7 +38,7 @@ function TabPanel(props: TabPanelProps) {
     );
 }
 
-export default function Activities({ inArray, out }: any) {
+export default function Activities({ inArray, out, currency }: any) {
     const [value, setValue] = React.useState(0);
 
     const [inIndex, setInIndex] = React.useState(0)
@@ -160,7 +160,7 @@ export default function Activities({ inArray, out }: any) {
                                 <>
                                     {
                                         allArray.slice(0, allIndex).map((res: any, index: number) => {
-                                            return <Activity transactions={res} key={index} />
+                                            return <Activity transactions={res} key={index} currency={currency} />
                                         })
                                     }
                                     <div className="text-center font-bold pt-5 w-full" >

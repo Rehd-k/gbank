@@ -1,9 +1,9 @@
 'use client'
 import { Paper } from '@mui/material'
 import moment from 'moment'
-export default function Activity({ transactions }: any) {
+export default function Activity({ transactions, currency }: any) {
 
-    
+
     function addCommas(number: { toString: () => any; }) {
         // Convert number to string
         var numberString = number.toString();
@@ -27,7 +27,7 @@ export default function Activity({ transactions }: any) {
                         {transactions.title}
                     </div>
                     <div className="">
-                        ${addCommas(transactions.amount)}
+                        {currency}{addCommas(transactions.amount)}
                     </div>
                 </div>
             </Paper>

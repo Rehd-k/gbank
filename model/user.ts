@@ -34,7 +34,7 @@ const UserSchema = new mongoose.Schema({
         required: true,
     },
     account_Number: {
-        type: Number,
+        type: String,
         required: true,
         unique: true
     },
@@ -109,7 +109,7 @@ const UserSchema = new mongoose.Schema({
         unique: true
     },
     phone_no: {
-        type: Number,
+        type: String,
         required: true,
     },
     answer: {
@@ -141,6 +141,10 @@ const UserSchema = new mongoose.Schema({
         type: Number,
         required: true,
         default: Date.now()
+    },
+    currency : {
+        type : String,
+        default : '$'
     }
 
 })
