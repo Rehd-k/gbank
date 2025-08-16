@@ -210,7 +210,7 @@ export default function TrasferCard({ cards, user_id, user }: any) {
 
                                     <div className="">{res.account_number}</div>
 
-                                    <div className="">$ {addCommas(res.balance)}</div>
+                                    <div className="">€ {addCommas(res.balance)}</div>
 
                                 </MenuItem>
                             })}
@@ -546,7 +546,7 @@ export default function TrasferCard({ cards, user_id, user }: any) {
                                 Amount :
                             </div>
                             <div className="">
-                                ${addCommas(formIk.values.amount)}
+                                €{addCommas(formIk.values.amount)}
                             </div>
                         </div>
 

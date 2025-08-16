@@ -39,7 +39,7 @@ export default function WithdrawalComponent() {
                             <MenuItem value={'Internal'} className="flex justify-between">
                                 <div className="">Max bird balance</div>
 
-                                <div className="">$ 5000</div>
+                                <div className="">€ 5000</div>
 
                             </MenuItem>
                             <MenuItem value={'External'}>
