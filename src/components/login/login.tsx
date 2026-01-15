@@ -1,4 +1,4 @@
-averonaveronaveronAveron'use client'
+'use client'
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import Image from "next/image";
