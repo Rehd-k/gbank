@@ -17,7 +17,7 @@ export default function SecondSection() {
                 </div>
 
                 <div className="text-gray-600 text-xs">
-                    Perform your routine funds transfer and bill payment in just 1-tap, when you set up recurring transfers or bill payment with Nebula Trust
+                    Perform your routine funds transfer and bill payment in just 1-tap, when you set up recurring transfers or bill payment with Averon Trust
                 </div>
 
                 <div className="mt-5 w-full flex justify-center">

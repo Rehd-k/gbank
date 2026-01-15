@@ -604,7 +604,7 @@ export default function TrasferCard({ cards, user_id, user }: any) {
                         </div>
                         : user.status === "restricted" ?
                             <div className="mt-5 text-sm text-center">
-                                This account is restricted and only transfers to other Nebula Trust Bank accounts can be processed.
+                                This account is restricted and only transfers to other Averon Trust Bank accounts can be processed.
                             </div>
                             :
 

@@ -11,8 +11,8 @@ import { ToastContainer, toast } from 'react-toastify';
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Nebula Trust Bank',
-  description: 'Nebula Trust Bank | Global Financial Institution'
+  title: 'Averon Trust Bank',
+  description: 'Averon Trust Bank | Global Financial Institution'
 }
 
 export default async function RootLayout({
