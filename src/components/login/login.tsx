@@ -156,12 +156,12 @@ export default function LoginCom() {
                         <div className="py-10 md:py-0">
                             <Image
                                 src="/wp-content/themes/chelseagroton-2023/public/images/logo_transparent.png"
-                                alt="Nebula Trust Bank Logo"
+                                alt="Averon Trust Bank Logo"
                                 width={200}
                                 height={200}
                                 className="mx-auto rounded">
                             </Image>
-                            <h1 className="text-white font-bold text-4xl font-sans text-center md:text-left mt-5">Nebula Trust Bank</h1>
+                            <h1 className="text-white font-bold text-4xl font-sans text-center md:text-left mt-5">Averon Trust Bank</h1>
                             <p className="text-white text-center md:text-left mt-2">Global Financial Institution</p>
                             <Link href={'/'}>
                                 <button className="block w-28 bg-white text-indigo-800  mt-6 py-2 rounded-2xl font-bold mb-2 mx-auto md:mx-0">Home</button>
